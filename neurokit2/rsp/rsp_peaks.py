@@ -1,6 +1,7 @@
 from ..signal import signal_formatpeaks
 from .rsp_findpeaks import rsp_findpeaks
 from .rsp_fixpeaks import rsp_fixpeaks
+from ..misc import find_closest
 import numpy as np
 
 def rsp_peaks(rsp_cleaned, sampling_rate=1000, method="khodadad2018", **kwargs):
