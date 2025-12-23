@@ -11,6 +11,7 @@ from .flw_rvt import flw_rvt
 from .flw_symmetry import flw_symmetry
 from .flw_time import flw_time
 from .flw_rav import flw_rav
+
 __all__ = [
     "flw_clean",
     "flw_peaks",
@@ -21,5 +22,5 @@ __all__ = [
     "flw_rate",
     "flw_symmetry",
     "flw_time",
-    "flw_rav"
+    "flw_rav",
 ]

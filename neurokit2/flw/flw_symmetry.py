@@ -108,18 +108,34 @@ def flw_symmetry(
 
     if insp_onsets[0] > exsp_onsets[0]:
         exsp_onsets = exsp_onsets[1:]
-    for i, p, e in zip(insp_onsets, peaks, exsp_onsets):
+    for insp, exsp in zip(insp_onsets, exsp_onsets):
         # the ratio of inspiration-to-peak interval to the peak-to-expiration interval
-        insp_symmetry.append((p-i)/(e-p))
+
+        pk = peaks[(insp<peaks) & (peaks<exsp)]  # peak must be between insp and exsp onset
+        if len(pk) >1:
+            raise ValueError('Found more than one peak between inspiration onset and expiration onset.')
+        elif len(pk)==1:
+            pk = pk[0]
+            insp_symmetry.append((pk-insp)/(exsp-pk))
 
     exsp_onsets = onsets["FLW_ExpirationOnsets"]  # in case it has been changed
     if insp_onsets[0] < exsp_onsets[0]:
         insp_onsets = insp_onsets[1:]
-    for e,t,i in zip(exsp_onsets, troughs, insp_onsets):
+    for exsp, insp in zip(exsp_onsets, insp_onsets):
         # the ratio of expiration-to-trough interval to the trough-to-inspiration interval
-        exsp_symmetry.append((t-e)/(i-t))
 
+        tr = troughs[(exsp<troughs) & (troughs<insp)]
+        if len(tr) > 1:
+            raise ValueError('Found more than one trough between inspiration onset and expiration onset.')
+        elif len(tr)==1:
+            tr = tr[0]
+            exsp_symmetry.append((tr-exsp)/(insp-tr))
 
+    if np.any(np.array(insp_symmetry) < 0):
+        raise ValueError("Inspiration symmetry values must be positive.")
+
+    if np.any(np.array(exsp_symmetry) < 0):
+        raise ValueError("Expiration symmetry values must be positive.")
 
     # Rise-decay symmetry
     through_to_peak = peaks - troughs

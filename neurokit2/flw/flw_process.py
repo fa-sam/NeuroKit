@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+import pandas as pd
 from ..misc import as_vector
 from .flw_amplitude import flw_amplitude
 from .flw_clean import flw_clean
@@ -7,6 +7,7 @@ from .flw_peaks import flw_peaks
 from .flw_rvt import flw_rvt
 from .flw_symmetry import flw_symmetry
 from .flw_time import flw_time
+from ..signal import signal_rate
 
 def flw_process(
     flw_signal,
@@ -77,12 +78,12 @@ def flw_process(
 
     """
     # Sanitize input
-    rsp_signal = as_vector(flw_signal)
+    flw_signal = as_vector(flw_signal)
 
 
     # Clean signal
     flw_cleaned = flw_clean(
-        rsp_signal,
+        flw_signal,
         sampling_rate=sampling_rate,
         method=method
     )
@@ -116,5 +117,15 @@ def flw_process(
     process_info.update(symmetry_info)
     process_info.update(time_info)
 
-    return process_info
+    rate = signal_rate(
+        peaks_info["FLW_Troughs"], sampling_rate=sampling_rate, desired_length=len(flw_signal)
+    )
+    signals = pd.DataFrame(
+        {
+            "FLW_Raw": flw_signal,
+            "FLW_Clean": flw_cleaned,
+            "FLW_Rate": rate,
+        }
+    )
+    return signals, process_info
 
