@@ -28,6 +28,7 @@ from .microstates import *
 from .misc import *
 from .ppg import *
 from .rsp import *
+from .flw import *
 from .signal import *
 from .stats import *
 from .video import *
