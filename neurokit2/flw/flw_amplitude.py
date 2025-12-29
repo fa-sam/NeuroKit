@@ -60,13 +60,19 @@ def flw_amplitude(flw_cleaned, peaks, troughs=None, method="standard", interpola
     # Format input.
     peaks, troughs = _rsp_fixpeaks_retrieve(peaks, troughs)
 
+    if troughs[0] < peaks[0]:   # we expect first peak and then trough
+        troughs = np.delete(troughs, 0)
+
+    min_len = min(len(peaks), len(troughs))
+    peaks = peaks[:min_len]
+    troughs = troughs[:min_len]
+
     # To consistently calculate amplitude, peaks and troughs must have the same
     # number of elements, and the first trough must precede the first peak.
-    if (peaks.size != troughs.size) or (peaks[0] <= troughs[0]):
+    if (peaks.size != troughs.size):
         raise TypeError(
-            "NeuroKit error: Please provide one of the containers ",
-            "returned by `flw_findpeaks()` as `extrema` argument and do ",
-            "not modify its content.",
+            "NeuroKit error: Please provide one of the containers returned by `flw_findpeaks()` "
+            "as `extrema` argument and do not modify its content.",
         )
 
     # Calculate amplitude in units of the raw signal, based on vertical
