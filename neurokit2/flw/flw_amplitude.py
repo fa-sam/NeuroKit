@@ -60,12 +60,7 @@ def flw_amplitude(flw_cleaned, peaks, troughs=None, method="standard", interpola
     # Format input.
     peaks, troughs = _rsp_fixpeaks_retrieve(peaks, troughs)
 
-    if troughs[0] < peaks[0]:   # we expect first peak and then trough
-        troughs = np.delete(troughs, 0)
-
-    min_len = min(len(peaks), len(troughs))
-    peaks = peaks[:min_len]
-    troughs = troughs[:min_len]
+    peaks, troughs = _flw_fixpeaks_retrieve(peaks, troughs)
 
     # To consistently calculate amplitude, peaks and troughs must have the same
     # number of elements, and the first trough must precede the first peak.
@@ -97,3 +92,16 @@ def flw_amplitude(flw_cleaned, peaks, troughs=None, method="standard", interpola
         amplitude = signal_interpolate(peaks, amplitude, x_new=np.arange(len(flw_cleaned)), method=interpolation_method)
 
     return amplitude, info
+
+def _flw_fixpeaks_retrieve(peaks, troughs, sequence='peak-first'):
+    if sequence == 'peak-first':
+        if troughs[0] < peaks[0]:   # we expect first peak and then trough
+            troughs = np.delete(troughs, 0)
+    if sequence == 'trough-first':
+        if peaks[0] < troughs[0]:
+            peaks = np.delete(peaks, 0)
+
+    min_len = min(len(peaks), len(troughs))
+    peaks = peaks[:min_len]
+    troughs = troughs[:min_len]
+    return peaks, troughs

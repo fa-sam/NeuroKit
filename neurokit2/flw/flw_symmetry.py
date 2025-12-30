@@ -6,9 +6,9 @@ import numpy as np
 import pandas as pd
 
 from ..misc import NeuroKitWarning, find_closest
-from ..signal import signal_interpolate
 from ..stats import rescale
 from ..rsp.rsp_fixpeaks import _rsp_fixpeaks_retrieve
+from .flw_amplitude import _flw_fixpeaks_retrieve
 from .flw_onsets import find_onsets
 
 def flw_symmetry(
@@ -68,7 +68,7 @@ def flw_symmetry(
     """
     # Format input.
     peaks, troughs = _rsp_fixpeaks_retrieve(peaks, troughs)
-
+    # peaks, troughs = _flw_fixpeaks_retrieve(peaks, troughs)
     # Sanity checks -----------------------------------------------------------
     failed_checks = False
     if len(peaks) <= 4 or len(troughs) <= 4:
@@ -79,21 +79,22 @@ def flw_symmetry(
         )
         failed_checks = True
 
-    if np.any(peaks - troughs < 0):
-        warn(
-            "Peaks and troughs are not correctly aligned (i.e., not consecutive)"
-            + ", returning nan for symmetry.",
-            category=NeuroKitWarning,
-        )
-        failed_checks = True
+    # if np.any(peaks - troughs < 0):
+    #     warn(
+    #         "Peaks and troughs are not correctly aligned (i.e., not consecutive)"
+    #         + ", returning nan for symmetry.",
+    #         category=NeuroKitWarning,
+    #     )
+    #     failed_checks = True
 
     if failed_checks:
         return {
-                "FLW_Symmetry_PeakTrough": np.array([]),
-                "FLW_Symmetry_RiseDecay":  np.array([]),
-                "FLW_Expiration_Symmetry": np.array([]),
-                "FLW_Inspiration_Symmetry": np.array([]),
-            }
+            "FLW_Symmetry_PeakTrough": np.array([]),
+            "FLW_Symmetry_RiseDecay": np.array([]),
+            "FLW_Expiration_Symmetry": np.array([]),
+            "FLW_Inspiration_Symmetry": np.array([]),
+            "FLW_InspExp_Ratio": np.array([]),
+        }
 
     # Compute symmetry features -----------------------------------------------
     # See https://twitter.com/bradleyvoytek/status/1591495571269124096/photo/1
@@ -118,6 +119,17 @@ def flw_symmetry(
             pk = pk[0]
             insp_symmetry.append((pk-insp)/(exsp-pk))
 
+    insp_exsp_ratios = []
+    for i in range(len(insp_onsets)-1):
+        insp1 = insp_onsets[i]
+        exsp1 = exsp_onsets[i]
+        insp2 = insp_onsets[i+1]
+        insp_duration = exsp1 - insp1
+        exsp_duration = insp2 - exsp1
+        insp_exsp_ratio = insp_duration/exsp_duration
+        insp_exsp_ratios.append(insp_exsp_ratio)
+
+
     exsp_onsets = onsets["FLW_ExpirationOnsets"]  # in case it has been changed
     if insp_onsets[0] < exsp_onsets[0]:
         insp_onsets = insp_onsets[1:]
@@ -138,6 +150,8 @@ def flw_symmetry(
         raise ValueError("Expiration symmetry values must be positive.")
 
     # Rise-decay symmetry
+    peaks, troughs = _flw_fixpeaks_retrieve(peaks, troughs, sequence='trough-first')
+
     through_to_peak = peaks - troughs
     peak_to_through = troughs[1:] - peaks[:-1]
     risedecay_symmetry = through_to_peak[:-1] / (through_to_peak[:-1] + peak_to_through)
@@ -187,6 +201,7 @@ def flw_symmetry(
         "FLW_Symmetry_RiseDecay": risedecay_symmetry,
         "FLW_Expiration_Symmetry": np.asarray(exsp_symmetry),
         "FLW_Inspiration_Symmetry": np.asarray(insp_symmetry),
+        "FLW_InspExp_Ratio": np.array(insp_exsp_ratios)
     }
     return info
 
