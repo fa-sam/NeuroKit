@@ -10,7 +10,8 @@ from .flw_peaks import flw_peaks
 
 def flw_rvt(
     flw_cleaned,
-    sampling_rate=1000,
+    peaks_info=None,
+    sampling_rate=100,
     method="cycle",
     use_mean_insp_exp=False,
     show=False,
@@ -64,7 +65,7 @@ def flw_rvt(
     """
     method = method.lower()  # remove capitalised letters
     if method in ["cycle"]:
-        rvt, info = _flw_rvt_cycle(flw_cleaned, sampling_rate=sampling_rate, use_mean_insp_exp=use_mean_insp_exp, **kwargs)
+        rvt, info = _flw_rvt_cycle(flw_cleaned, peaks_info, sampling_rate=sampling_rate, use_mean_insp_exp=use_mean_insp_exp, **kwargs)
     elif method in ["continuous", "ventilation"]:
         rvt, info = _flw_rvt_continuous(flw_cleaned, sampling_rate=sampling_rate ** kwargs)
     elif method in ["harrison", "harrison2021"]:
@@ -80,6 +81,7 @@ def flw_rvt(
 
 def _flw_rvt_cycle(
     flw_cleaned,
+    peaks_info=None,
     sampling_rate=100,
     use_mean_insp_exp=False,
     peak_distance=0.8,
@@ -113,16 +115,17 @@ def _flw_rvt_cycle(
             'FLW_MVF'|nparray, mean ventilatory flow for each breath.
         """
 
-    # find peaks and troughs
-    _, onset_info = flw_peaks(
-        flw_cleaned,
-        sampling_rate=sampling_rate,
-        method="scipy",
-        peak_distance=peak_distance,
-        peak_prominence=peak_prominence,
-    )
-    insp_onsets = onset_info["FLW_InspirationOnsets"]
-    exsp_onsets = onset_info["FLW_ExpirationOnsets"]
+    if peaks_info is None or 'FLW_InspirationOnsets' not in peaks_info or 'FLW_ExpirationOnsets' not in peaks_info:
+        # find peaks and troughs
+        _, peaks_info = flw_peaks(
+            flw_cleaned,
+            sampling_rate=sampling_rate,
+            method="scipy",
+            peak_distance=peak_distance,
+            peak_prominence=peak_prominence,
+        )
+    insp_onsets = peaks_info["FLW_InspirationOnsets"]
+    exsp_onsets = peaks_info["FLW_ExpirationOnsets"]
 
     empty_info = {
             "FLW_Tidal_Volume": np.asarray([]),

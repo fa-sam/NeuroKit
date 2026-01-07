@@ -1,0 +1,760 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Neurokit2-flow documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=60c0e2ec"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="#">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">None</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul class="nav bd-sidenav">
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>NeuroKit2 - flw API</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toctree-l2 toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neurokit2.flw.find_onsets"><code class="docutils literal notranslate"><span class="pre">find_onsets()</span></code></a></li>
+<li class="toctree-l2 toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neurokit2.flw.flw_amplitude"><code class="docutils literal notranslate"><span class="pre">flw_amplitude()</span></code></a></li>
+<li class="toctree-l2 toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neurokit2.flw.flw_clean"><code class="docutils literal notranslate"><span class="pre">flw_clean()</span></code></a></li>
+<li class="toctree-l2 toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neurokit2.flw.flw_peaks"><code class="docutils literal notranslate"><span class="pre">flw_peaks()</span></code></a></li>
+<li class="toctree-l2 toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neurokit2.flw.flw_process"><code class="docutils literal notranslate"><span class="pre">flw_process()</span></code></a></li>
+<li class="toctree-l2 toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neurokit2.flw.flw_rate"><code class="docutils literal notranslate"><span class="pre">flw_rate()</span></code></a></li>
+<li class="toctree-l2 toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neurokit2.flw.flw_rav"><code class="docutils literal notranslate"><span class="pre">flw_rav()</span></code></a></li>
+<li class="toctree-l2 toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neurokit2.flw.flw_rrv"><code class="docutils literal notranslate"><span class="pre">flw_rrv()</span></code></a></li>
+<li class="toctree-l2 toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neurokit2.flw.flw_rvt"><code class="docutils literal notranslate"><span class="pre">flw_rvt()</span></code></a></li>
+<li class="toctree-l2 toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neurokit2.flw.flw_symmetry"><code class="docutils literal notranslate"><span class="pre">flw_symmetry()</span></code></a></li>
+<li class="toctree-l2 toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neurokit2.flw.flw_time"><code class="docutils literal notranslate"><span class="pre">flw_time()</span></code></a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="neurokit2-flw-api">
+<h1>NeuroKit2 - flw API<a class="headerlink" href="#neurokit2-flw-api" title="Link to this heading">#</a></h1>
+<div class="toctree-wrapper compound">
+<span id="document-api/neurokit2.flw"></span><section id="module-neurokit2.flw">
+<span id="neurokit2-flw"></span><h2>neurokit2.flw<a class="headerlink" href="#module-neurokit2.flw" title="Link to this heading">#</a></h2>
+<p>Submodule for NeuroKit.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="neurokit2.flw.find_onsets">
+<span class="sig-prename descclassname"><span class="pre">neurokit2.flw.</span></span><span class="sig-name descname"><span class="pre">find_onsets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flw_cleaned</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster_gap_sec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_breath_sec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">probe_offset_sec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inspiration_positive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neurokit2.flw.find_onsets" title="Link to this definition">#</a></dt>
+<dd><p>Detect inspiration and expiration onset in a noisy airflow signal by taking
+the midpoint between the first and last zero-crossings inside each cluster.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>flw_cleaned</strong> (<em>np.ndarray</em>) – Airflow signal (L/s or mL/s). Ideally, inspiration is positive and expiration negative.</p></li>
+<li><p><strong>sampling_rate</strong> (<em>float</em>) – Sampling rate in Hz.</p></li>
+<li><p><strong>cluster_gap_sec</strong> (<em>float</em>) – Max separation (seconds) between adjacent zero-crossings to consider them
+part of the same cluster.</p></li>
+<li><p><strong>min_breath_sec</strong> (<em>float</em>) – Minimum time between accepted onsets (seconds) to avoid duplicates.</p></li>
+<li><p><strong>probe_offset_sec</strong> (<em>float</em>) – Offset (seconds) from the cluster boundary to evaluate the sign before/after.</p></li>
+<li><p><strong>inspiration_positive</strong> (<em>bool</em>) – If False, the function will flip the signal so that inspiration becomes positive.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>{</dt><dd><p>“FLW_InspirationOnsets”:np.ndarray,
+“FLW_ExpirationOnsets”: np.ndarray</p>
+</dd>
+</dl>
+<p>}</p>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="neurokit2.flw.flw_amplitude">
+<span class="sig-prename descclassname"><span class="pre">neurokit2.flw.</span></span><span class="sig-name descname"><span class="pre">flw_amplitude</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flw_cleaned</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">peaks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">troughs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'standard'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interpolation_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'monotone_cubic'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neurokit2.flw.flw_amplitude" title="Link to this definition">#</a></dt>
+<dd><p><strong>Compute respiratory amplitude from airflow</strong></p>
+<p>Compute respiratory amplitude given the raw respiration signal and its extrema. The
+<strong>standard</strong> method computes the amplitude as the difference between a peak and its preceding
+trough, while the <strong>prepost</strong> method computes the amplitude as the average of the differences
+of peak to its preceding and succeeding troughs (Cole, 2019).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>flw_cleaned</strong> (<em>Union</em><em>[</em><em>list</em><em>, </em><em>np.array</em><em>, </em><em>pd.Series</em><em>]</em>) – The cleaned respiration channel as returned by <a class="reference internal" href="#neurokit2.flw.flw_clean" title="neurokit2.flw.flw_clean"><code class="xref py py-func docutils literal notranslate"><span class="pre">flw_clean()</span></code></a>.</p></li>
+<li><p><strong>peaks</strong> (<em>list</em><em> or </em><em>array</em><em> or </em><em>DataFrame</em><em> or </em><em>Series</em><em> or </em><em>dict</em>) – The samples at which the respiration peaks occur. If a dict or a
+DataFrame is passed, it is assumed that these containers were obtained
+with <code class="xref py py-func docutils literal notranslate"><span class="pre">flw_findpeaks()</span></code>.</p></li>
+<li><p><strong>troughs</strong> (<em>list</em><em> or </em><em>array</em><em> or </em><em>DataFrame</em><em> or </em><em>Series</em><em> or </em><em>dict</em>) – The samples at which the respiration troughs occur. If a dict or a
+is passed, it is assumed that these containers were obtained with <code class="xref py py-func docutils literal notranslate"><span class="pre">flw_findpeaks()</span></code>.</p></li>
+<li><p><strong>method</strong> (<em>str</em>) – The method to use to compute the amplitude. Can be <code class="docutils literal notranslate"><span class="pre">&quot;standard&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;prepost&quot;</span></code>.</p></li>
+<li><p><strong>interpolation_method</strong> (<em>str</em>) – Method used to interpolate the amplitude between peaks. See <code class="xref py py-func docutils literal notranslate"><span class="pre">signal_interpolate()</span></code>.
+<code class="docutils literal notranslate"><span class="pre">&quot;monotone_cubic&quot;</span></code> is chosen as the default interpolation method since it ensures monotone
+interpolation between data point (i.e., it prevents physiologically implausible “overshoots”
+or “undershoots” in the y-direction). In contrast, the widely used cubic spline
+‘interpolation does not ensure monotonicity.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A vector containing the respiratory amplitude.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#neurokit2.flw.flw_clean" title="neurokit2.flw.flw_clean"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flw_clean</span></code></a>, <a class="reference internal" href="#neurokit2.flw.flw_peaks" title="neurokit2.flw.flw_peaks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flw_peaks</span></code></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">signal_rate</span></code>, <a class="reference internal" href="#neurokit2.flw.flw_process" title="neurokit2.flw.flw_process"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flw_process</span></code></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">flw_plot</span></code>, <a class="reference internal" href="#neurokit2.flw.flw_symmetry" title="neurokit2.flw.flw_symmetry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flw_symmetry</span></code></a></p>
+</div>
+<p class="rubric">Examples</p>
+<p class="rubric">References</p>
+<ul class="simple">
+<li><p>Cole, S., &amp; Voytek, B. (2019). Cycle-by-cycle analysis of neural oscillations. Journal of
+neurophysiology, 122(2), 849-861.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="neurokit2.flw.flw_clean">
+<span class="sig-prename descclassname"><span class="pre">neurokit2.flw.</span></span><span class="sig-name descname"><span class="pre">flw_clean</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flw_signal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'khodadad2018'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neurokit2.flw.flw_clean" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="neurokit2.flw.flw_peaks">
+<span class="sig-prename descclassname"><span class="pre">neurokit2.flw.</span></span><span class="sig-name descname"><span class="pre">flw_peaks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flw_cleaned</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'khodadad2018'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neurokit2.flw.flw_peaks" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="neurokit2.flw.flw_process">
+<span class="sig-prename descclassname"><span class="pre">neurokit2.flw.</span></span><span class="sig-name descname"><span class="pre">flw_process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flw_signal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'khodadad2018'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method_rvt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cycle'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pad_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neurokit2.flw.flw_process" title="Link to this definition">#</a></dt>
+<dd><p><strong>Process a respiration airflow signal</strong></p>
+<p>Convenience function that automatically processes an airflow signal with one of the
+following methods:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://iopscience.iop.org/article/10.1088/1361-6579/aad7e6/meta">Khodadad et al. (2018)</a></p></li>
+<li><p><a class="reference external" href="https://github.com/PIA-Group/BioSPPy/blob/master/biosppy/signals/resp.py">BioSPPy</a></p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>flw_signal</strong> (<em>Union</em><em>[</em><em>list</em><em>, </em><em>np.array</em><em>, </em><em>pd.Series</em><em>]</em>) – The raw respiration airflow channel.</p></li>
+<li><p><strong>sampling_rate</strong> (<em>int</em>) – The sampling frequency of airflow signal (in Hz, i.e., samples/second).</p></li>
+<li><p><strong>method</strong> (<em>str</em>) – The processing pipeline to apply. Can be one of <code class="docutils literal notranslate"><span class="pre">&quot;khodadad2018&quot;</span></code> (default)
+or <code class="docutils literal notranslate"><span class="pre">&quot;biosppy&quot;</span></code>.</p></li>
+<li><p><strong>method_rvt</strong> (<em>str</em>) – The rvt method to apply. Can be one of <code class="docutils literal notranslate"><span class="pre">&quot;cycle&quot;</span></code> (default), <code class="docutils literal notranslate"><span class="pre">&quot;continuous&quot;</span></code>,
+or <code class="docutils literal notranslate"><span class="pre">&quot;cycle&quot;</span></code>.</p></li>
+<li><p><strong>pad_length</strong> (<em>float</em>) – The length of padding in seconds from both sides of the signal. If the signal is padded from both sides, we use the whole
+signal for filtering (flw_clean) and peak detection, but only consider the part without padding for the
+feature analysis.</p></li>
+<li><p><strong>**kwargs</strong> – Other arguments to be passed to specific methods. For more information,
+see <code class="xref py py-func docutils literal notranslate"><span class="pre">rsp_methods()</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul>
+<li><p><strong>signals</strong> (<em>DataFrame</em>) – A DataFrame of same length as <code class="xref py py-func docutils literal notranslate"><span class="pre">rsp_signal()</span></code> containing the following columns:</p></li>
+<li><p><strong>info</strong> (<em>dict</em>) –</p>
+<dl class="simple">
+<dt>A dictionary containing:</dt><dd><p>”FLW_Peaks” | the samples at which inhalation peaks occur,
+“FLW_Troughs” | the samples at which exhalation troughs occur,
+“FLW_InspirationOnsets” | the samples at which inspiration onsets occur,
+“FLW_ExpirationOnsets” | the samples at which expiration onsets occur,
+“FLW_Amplitude”<a href="#id1"><span class="problematic" id="id2">|</span></a>The breathing amplitude in each breath,
+“FLW_RVT”<a href="#id3"><span class="problematic" id="id4">|</span></a>Respiratory volume per time (RVT) for each breath.</p>
+</dd>
+</dl>
+</li>
+<li><p><em>.. note::</em> – The pad_length parameter is used when we already padded the input flw_signal from both side, either with
+constant value or be real flow values from previous and next epoch. The padding helps the peak detection
+algorithm to detect more peaks and troughs in the real interval. Otherwise, one or more peaks/troughs
+from beginning or end of signal might be missed by the find_peaks function.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#neurokit2.flw.flw_clean" title="neurokit2.flw.flw_clean"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flw_clean</span></code></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">flw_findpeaks</span></code>, <a class="reference internal" href="#neurokit2.flw.flw_amplitude" title="neurokit2.flw.flw_amplitude"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flw_amplitude</span></code></a>, <a class="reference internal" href="#neurokit2.flw.flw_rvt" title="neurokit2.flw.flw_rvt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flw_rvt</span></code></a>, <a class="reference internal" href="#neurokit2.flw.flw_symmetry" title="neurokit2.flw.flw_symmetry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flw_symmetry</span></code></a></p>
+</div>
+<p class="rubric">Examples</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="neurokit2.flw.flw_rate">
+<span class="sig-prename descclassname"><span class="pre">neurokit2.flw.</span></span><span class="sig-name descname"><span class="pre">flw_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flw_cleaned</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">troughs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hop_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'trough'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">peak_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'khodadad2018'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interpolation_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'monotone_cubic'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neurokit2.flw.flw_rate" title="Link to this definition">#</a></dt>
+<dd><p><strong>Find respiration rate</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>flw_cleaned</strong> (<em>Union</em><em>[</em><em>list</em><em>, </em><em>np.array</em><em>, </em><em>pd.Series</em><em>]</em>) – The cleaned airflow respiration channel as returned by <a class="reference internal" href="#neurokit2.flw.flw_clean" title="neurokit2.flw.flw_clean"><code class="xref py py-func docutils literal notranslate"><span class="pre">flw_clean()</span></code></a>.</p></li>
+<li><p><strong>troughs</strong> (<em>Union</em><em>[</em><em>list</em><em>, </em><em>dict</em><em>, </em><em>np.array</em><em>, </em><em>pd.Series</em><em>, </em><em>pd.DataFrame</em><em>]</em>) – The airflow respiration troughs as returned by <a class="reference internal" href="#neurokit2.flw.flw_peaks" title="neurokit2.flw.flw_peaks"><code class="xref py py-func docutils literal notranslate"><span class="pre">flw_peaks()</span></code></a>.
+If None (default), troughs  will be automatically identified from the <a class="reference internal" href="#neurokit2.flw.flw_clean" title="neurokit2.flw.flw_clean"><code class="xref py py-func docutils literal notranslate"><span class="pre">flw_clean()</span></code></a> signal.</p></li>
+<li><p><strong>sampling_rate</strong> (<em>int</em>) – The sampling frequency of <code class="xref py py-func docutils literal notranslate"><span class="pre">flw_cleaned()</span></code> (in Hz, i.e., samples/second).</p></li>
+<li><p><strong>window</strong> (<em>int</em>) – The duration of the sliding window (in second). Default to 10 seconds.</p></li>
+<li><p><strong>hop_size</strong> (<em>int</em>) – The number of samples between each successive window. Default to 1 sample.</p></li>
+<li><p><strong>method</strong> (<em>str</em>) – Method can either be <code class="docutils literal notranslate"><span class="pre">&quot;trough&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;xcorr&quot;</span></code>. In <code class="docutils literal notranslate"><span class="pre">&quot;trough&quot;</span></code> method, respiratory rate
+is calculated from the periods between successive inspirations (i.e., troughs).
+In <code class="docutils literal notranslate"><span class="pre">&quot;xcorr&quot;</span></code> method, cross-correlations between the changes in respiration with
+a bank of sinusoids of different frequencies are calculated to identify the principal
+frequency of oscillation.</p></li>
+<li><p><strong>peak_method</strong> (<em>str</em>) – Method to identify successive respiratory inspirations, only relevant if method is
+<code class="docutils literal notranslate"><span class="pre">&quot;trough&quot;</span></code>. Can be one of <code class="docutils literal notranslate"><span class="pre">&quot;khodadad2018&quot;</span></code> (default) or <code class="docutils literal notranslate"><span class="pre">&quot;biosppy&quot;</span></code>.</p></li>
+<li><p><strong>interpolation_method</strong> (<em>str</em>) – Method used to interpolate the rate between inhalation onsets.
+See <code class="xref py py-func docutils literal notranslate"><span class="pre">signal_interpolate()</span></code>. <code class="docutils literal notranslate"><span class="pre">&quot;monotone_cubic&quot;</span></code> is chosen as the default
+interpolation method since it ensures monotone interpolation between data points (i.e., it
+prevents physiologically implausible “overshoots” or “undershoots” in the
+y-direction). In contrast, the widely used cubic spline interpolation does not ensure
+monotonicity.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>rsp_rate</strong> – Instantenous respiration rate.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="neurokit2.flw.flw_rav">
+<span class="sig-prename descclassname"><span class="pre">neurokit2.flw.</span></span><span class="sig-name descname"><span class="pre">flw_rav</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">amplitude</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">peaks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">troughs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neurokit2.flw.flw_rav" title="Link to this definition">#</a></dt>
+<dd><p><strong>Respiratory Amplitude Variability (RAV)</strong></p>
+<p>Computes indices of amplitude variability, such as the mean and SD of the amplitude, and the
+RMSSD of the successive differences.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is an exploratory feature. If you manage to find studies and literature on RAV, please
+let us know by opening an issue on GitHub. Adding more indices (similar to HRV) would be
+trivial, but having some evidence as for its usefulness would be prerequisite.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>amplitude</strong> (<em>Union</em><em>[</em><em>list</em><em>, </em><em>np.array</em><em>, </em><em>pd.Series</em><em>]</em>) – The amplitude signal as returned by <a class="reference internal" href="#neurokit2.flw.flw_amplitude" title="neurokit2.flw.flw_amplitude"><code class="xref py py-func docutils literal notranslate"><span class="pre">flw_amplitude()</span></code></a>.</p></li>
+<li><p><strong>peaks</strong> (<em>list</em><em> or </em><em>array</em><em> or </em><em>DataFrame</em><em> or </em><em>Series</em><em> or </em><em>dict</em>) – The samples at which the inhalation peaks occur. If a dict or a DataFrame is passed, it is
+assumed that these containers were obtained with <code class="xref py py-func docutils literal notranslate"><span class="pre">flw_findpeaks()</span></code>.</p></li>
+<li><p><strong>troughs</strong> (<em>list</em><em> or </em><em>array</em><em> or </em><em>DataFrame</em><em> or </em><em>Series</em><em> or </em><em>dict</em>) – The samples at which the troughs occur. If a dict or a DataFrame is passed, it is
+assumed that these containers were obtained with <code class="xref py py-func docutils literal notranslate"><span class="pre">flw_findpeaks()</span></code>. This argument can
+be inferred from the <code class="docutils literal notranslate"><span class="pre">peaks</span></code> argument if the information.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A DataFrame of containing the following columns with RAV indices.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><code class="xref py py-obj docutils literal notranslate"><span class="pre">rsp_amplitude</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">rsp_rrv</span></code></p>
+</div>
+<p class="rubric">Examples</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="neurokit2.flw.flw_rrv">
+<span class="sig-prename descclassname"><span class="pre">neurokit2.flw.</span></span><span class="sig-name descname"><span class="pre">flw_rrv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flw_rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">troughs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">silent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neurokit2.flw.flw_rrv" title="Link to this definition">#</a></dt>
+<dd><p><strong>Respiratory Rate Variability (RRV)</strong></p>
+<p>Computes time domain and frequency domain features for Respiratory Rate Variability (RRV)
+analysis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>flw_rate</strong> (<em>array</em>) – Array containing the respiratory rate, produced by <code class="xref py py-func docutils literal notranslate"><span class="pre">signal_rate()</span></code>.</p></li>
+<li><p><strong>troughs</strong> (<em>dict</em>) – The samples at which the inhalation onsets occur.
+Dict returned by <a class="reference internal" href="#neurokit2.flw.flw_peaks" title="neurokit2.flw.flw_peaks"><code class="xref py py-func docutils literal notranslate"><span class="pre">flw_peaks()</span></code></a> (Accessible with the key, <code class="docutils literal notranslate"><span class="pre">&quot;FLW_Troughs&quot;</span></code>).
+Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>sampling_rate</strong> (<em>int</em>) – The sampling frequency of the signal (in Hz, i.e., samples/second).</p></li>
+<li><p><strong>show</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, will return a Poincaré plot, a scattergram, which plots each breath-to-breath
+interval against the next successive one. The ellipse centers around the average
+breath-to-breath interval. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>silent</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, warnings will be printed. Default to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>DataFrame consisting of the computed RRV metrics, which includes:</p>
+<ul class="simple">
+<li><p><strong>MFDFA indices</strong>: Indices related to the <code class="xref py py-func docutils literal notranslate"><span class="pre">multifractal</span> <span class="pre">spectrum</span></code>.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>DataFrame</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><code class="xref py py-obj docutils literal notranslate"><span class="pre">signal_rate</span></code>, <a class="reference internal" href="#neurokit2.flw.flw_peaks" title="neurokit2.flw.flw_peaks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flw_peaks</span></code></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">signal_power</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">entropy_sample</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">entropy_approximate</span></code></p>
+</div>
+<p class="rubric">Examples</p>
+<p class="rubric">References</p>
+<ul class="simple">
+<li><p>Soni, R., &amp; Muniyandi, M. (2019). Breath rate variability: a novel measure to study the
+meditation effects. International Journal of Yoga, 12(1), 45.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="neurokit2.flw.flw_rvt">
+<span class="sig-prename descclassname"><span class="pre">neurokit2.flw.</span></span><span class="sig-name descname"><span class="pre">flw_rvt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flw_cleaned</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">peaks_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cycle'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_mean_insp_exp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neurokit2.flw.flw_rvt" title="Link to this definition">#</a></dt>
+<dd><p><strong>Respiratory Volume per Time (RVT) from Airflow</strong></p>
+<p>Computes Respiratory Volume per Time (RVT) from the airflow. RVT is the product of respiratory volume and
+breathing rate. RVT can be used to identify the global fMRI confounds of breathing, which is
+often considered noise.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>flw_cleaned</strong> (<em>array</em>) – Array containing the flow rate, produced by <code class="xref py py-func docutils literal notranslate"><span class="pre">signal_rate()</span></code>.</p></li>
+<li><p><strong>sampling_rate</strong> (<em>int</em><em>, </em><em>optional</em>) – The sampling frequency of the signal (in Hz, i.e., samples/second).</p></li>
+<li><p><strong>method</strong> (<em>str</em><em>, </em><em>optional</em>) – The rvt method to apply. Can be one of  <code class="docutils literal notranslate"><span class="pre">&quot;cycle&quot;</span></code> (default), <code class="docutils literal notranslate"><span class="pre">&quot;continuous&quot;</span></code> or
+<code class="docutils literal notranslate"><span class="pre">&quot;harrison2021&quot;</span></code>.</p></li>
+<li><p><strong>use_mean_insp_exp</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, compute VT as mean(inspiration_integral, expiration_integral_abs).</p></li>
+<li><p><strong>show</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, will return a simple plot of the RVT (with the re-scaled original FLW signal).</p></li>
+<li><p><strong>**kwargs</strong> – Arguments to be passed to the underlying peak detection algorithm.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>rvt : array, RVT in L/s, length == len(flow). Array containing the current RVT at every breath.
+info : dict with keys</p>
+<blockquote>
+<div><p>’FLW_Tidal_Volume’<a href="#id5"><span class="problematic" id="id6">|</span></a>nparray, tidal volume for each breath
+‘cycle_s’<a href="#id7"><span class="problematic" id="id8">|</span></a>nparray, inspiration time for each breath
+‘FLW_MVF’<a href="#id9"><span class="problematic" id="id10">|</span></a>nparray, mean ventilatory flow for each breath.</p>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><code class="xref py py-obj docutils literal notranslate"><span class="pre">signal_rate</span></code>, <a class="reference internal" href="#neurokit2.flw.flw_peaks" title="neurokit2.flw.flw_peaks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flw_peaks</span></code></a>, <a class="reference internal" href="#neurokit2.flw.flw_clean" title="neurokit2.flw.flw_clean"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flw_clean</span></code></a></p>
+</div>
+<p class="rubric">Examples</p>
+<p class="rubric">References</p>
+<ul class="simple">
+<li><p>Harrison, S. J., Bianchi, S., Heinzle, J., Stephan, K. E., Iglesias, S., &amp; Kasper, L. (2021).
+A Hilbert-based method for processing respiratory timeseries. Neuroimage, 230, 117787.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="neurokit2.flw.flw_symmetry">
+<span class="sig-prename descclassname"><span class="pre">neurokit2.flw.</span></span><span class="sig-name descname"><span class="pre">flw_symmetry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flw_cleaned</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">peaks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">troughs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neurokit2.flw.flw_symmetry" title="Link to this definition">#</a></dt>
+<dd><p><strong>Respiration Cycle Symmetry Features</strong></p>
+<p>Compute symmetry features of the respiration cycle, such as the Peak-Trough symmetry and the
+Rise-Decay symmetry (see Cole, 2019). Note that the values for each cycle are interpolated to
+the same length as the signal (and the first and last cycles, for which one cannot compute the
+symmetry characteristics, are padded).</p>
+<figure class="align-default">
+<a class="reference external image-reference" href="https://journals.physiology.org/doi/full/10.1152/jn.00273.2019"><img alt="Figure from Cole and Voytek (2019)." src="img/cole2019.png" />
+</a>
+</figure>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>flw_cleaned</strong> (<em>Union</em><em>[</em><em>list</em><em>, </em><em>np.array</em><em>, </em><em>pd.Series</em><em>]</em>) – The cleaned respiration channel as returned by <a class="reference internal" href="#neurokit2.flw.flw_clean" title="neurokit2.flw.flw_clean"><code class="xref py py-func docutils literal notranslate"><span class="pre">flw_clean()</span></code></a>.</p></li>
+<li><p><strong>peaks</strong> (<em>list</em><em> or </em><em>array</em><em> or </em><em>DataFrame</em><em> or </em><em>Series</em><em> or </em><em>dict</em>) – The samples at which the inhalation peaks occur. If a dict or a DataFrame is passed, it is
+assumed that these containers were obtained with <code class="xref py py-func docutils literal notranslate"><span class="pre">flw_findpeaks()</span></code>.</p></li>
+<li><p><strong>troughs</strong> (<em>list</em><em> or </em><em>array</em><em> or </em><em>DataFrame</em><em> or </em><em>Series</em><em> or </em><em>dict</em>) – The samples at which the inhalation troughs occur. If a dict or a DataFrame is passed, it is
+assumed that these containers were obtained with <code class="xref py py-func docutils literal notranslate"><span class="pre">flw_findpeaks()</span></code>.</p></li>
+<li><p><strong>sampling_rate</strong> (<em>int</em><em>, </em><em>optional</em><em> (</em><em>default=100</em><em>) </em><em>the sampling frequency</em><em> of </em><em>signal flw_cleaned in Hz</em><em>,</em>)</p></li>
+<li><p><strong>show</strong> (<em>bool</em>) – If True, show a plot of the symmetry features.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>A DataFrame of same length as <code class="xref py py-func docutils literal notranslate"><span class="pre">flw_signal()</span></code> containing the following columns:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;RSP_Symmetry_PeakTrough&quot;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;RSP_Symmetry_RiseDecay&quot;</span></code></p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#neurokit2.flw.flw_clean" title="neurokit2.flw.flw_clean"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flw_clean</span></code></a>, <a class="reference internal" href="#neurokit2.flw.flw_peaks" title="neurokit2.flw.flw_peaks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flw_peaks</span></code></a>, <a class="reference internal" href="#neurokit2.flw.flw_amplitude" title="neurokit2.flw.flw_amplitude"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flw_amplitude</span></code></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">rsp_phase</span></code></p>
+</div>
+<p class="rubric">Examples</p>
+<p class="rubric">References</p>
+<ul class="simple">
+<li><p>Cole, S., &amp; Voytek, B. (2019). Cycle-by-cycle analysis of neural oscillations. Journal of
+neurophysiology, 122(2), 849-861.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="neurokit2.flw.flw_time">
+<span class="sig-prename descclassname"><span class="pre">neurokit2.flw.</span></span><span class="sig-name descname"><span class="pre">flw_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flw_cleaned</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">peaks_info</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'khodadad2018'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neurokit2.flw.flw_time" title="Link to this definition">#</a></dt>
+<dd><p>It calculates the inspiration time, expiration time and the respiratory intervals using the airflow signal.
+It uses the <code class="docutils literal notranslate"><span class="pre">.flw_peaks</span></code> function to detect the troughs, inspiration onsets and expiration onsets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>flw_cleaned</strong> (<em>np.ndarray</em>) – Airflow signal (L/s or mL/s). Ideally, inspiration is positive and expiration negative.</p></li>
+<li><p><strong>peaks_info</strong> (<em>dict</em>) – A dict containing the locations of peaks, troughs, inspiration onsets and expiration onsets.</p></li>
+<li><p><strong>sampling_rate</strong> (<em>float</em>) – Sampling rate in Hz.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>{</dt><dd><p>“FLW_Inspiration_Times”:np.ndarray,
+“FLW_Expiration_Times”: np.ndarray,
+“FLW_RRI”: np.ndarray</p>
+</dd>
+</dl>
+<p>}</p>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p><a href="#id11"><span class="problematic" id="id12">``</span></a></p>
+</section>
+</div>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toctree-l2 toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neurokit2.flw.find_onsets"><code class="docutils literal notranslate"><span class="pre">find_onsets()</span></code></a></li>
+<li class="toctree-l2 toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neurokit2.flw.flw_amplitude"><code class="docutils literal notranslate"><span class="pre">flw_amplitude()</span></code></a></li>
+<li class="toctree-l2 toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neurokit2.flw.flw_clean"><code class="docutils literal notranslate"><span class="pre">flw_clean()</span></code></a></li>
+<li class="toctree-l2 toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neurokit2.flw.flw_peaks"><code class="docutils literal notranslate"><span class="pre">flw_peaks()</span></code></a></li>
+<li class="toctree-l2 toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neurokit2.flw.flw_process"><code class="docutils literal notranslate"><span class="pre">flw_process()</span></code></a></li>
+<li class="toctree-l2 toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neurokit2.flw.flw_rate"><code class="docutils literal notranslate"><span class="pre">flw_rate()</span></code></a></li>
+<li class="toctree-l2 toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neurokit2.flw.flw_rav"><code class="docutils literal notranslate"><span class="pre">flw_rav()</span></code></a></li>
+<li class="toctree-l2 toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neurokit2.flw.flw_rrv"><code class="docutils literal notranslate"><span class="pre">flw_rrv()</span></code></a></li>
+<li class="toctree-l2 toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neurokit2.flw.flw_rvt"><code class="docutils literal notranslate"><span class="pre">flw_rvt()</span></code></a></li>
+<li class="toctree-l2 toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neurokit2.flw.flw_symmetry"><code class="docutils literal notranslate"><span class="pre">flw_symmetry()</span></code></a></li>
+<li class="toctree-l2 toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neurokit2.flw.flw_time"><code class="docutils literal notranslate"><span class="pre">flw_time()</span></code></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Farzad Samie
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026, Farzad Samie.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

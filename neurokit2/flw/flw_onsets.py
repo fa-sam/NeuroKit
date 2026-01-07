@@ -147,3 +147,81 @@ def find_onsets(
         "FLW_InspirationOnsets": insp_onsets,
         "FLW_ExpirationOnsets": exp_onsets
     }
+
+def _flw_fix_onsets(peaks, troughs, insp_onsets, exsp_onsets):
+    events = np.concatenate([peaks, troughs])
+    labels = np.array(['peak'] * len(peaks) + ['trough'] * len(troughs))
+    order = np.argsort(events)
+    events = events[order]
+    labels = labels[order]
+
+    # Iterate through consecutive pairs
+    for i in range(len(events) - 1):
+        start = events[i]
+        end = events[i + 1]
+
+        if labels[i] == 'trough' and labels[i + 1] == 'peak':
+            # Trough → Peak: keep one inspiration onset
+            del_candidates = exsp_onsets[(exsp_onsets > start) & (exsp_onsets < end)]
+            for j in del_candidates:                # remove all inspiration onsets
+                index = np.where(exsp_onsets == j)[0]
+                exsp_onsets = np.delete(exsp_onsets, index)
+
+            insp_candidate = insp_onsets[(insp_onsets > start) & (insp_onsets < end)]
+            del_candidates = insp_candidate[1:]          # keep only one inspiration onset
+            for j in del_candidates:
+                index = np.where(insp_onsets == j)[0]
+                insp_onsets = np.delete(insp_onsets, index)
+
+        elif labels[i] == 'peak' and labels[i + 1] == 'trough':
+            # Peak → Trough: keep one expiration onset
+            del_candidates = insp_onsets[(insp_onsets > start) & (insp_onsets < end)]  # remove all inspiration onsets
+            for j in del_candidates:
+                index = np.where(insp_onsets == j)[0]
+                insp_onsets = np.delete(insp_onsets, index)
+
+            exsp_candidate = exsp_onsets[(exsp_onsets > start) & (exsp_onsets < end)]  # keep only one expiration onset
+            del_candidates = exsp_candidate[1:]
+            for j in del_candidates:
+                index = np.where(exsp_onsets == j)[0]
+                exsp_onsets = np.delete(exsp_onsets, index)
+
+        last_peak_trough = events[-1]
+        insp_onsets, exsp_onsets = _keep_only_first_onset_after_peakstroughs(insp_onsets, exsp_onsets, last_peak_trough)
+    return insp_onsets, exsp_onsets
+
+
+
+def _keep_only_first_onset_after_peakstroughs(insp, exsp, last_peak_trough):
+    # Find first index in each array where value > X
+    exsp_idx = np.searchsorted(exsp, last_peak_trough + 1)  # first greater than X
+    insp_idx = np.searchsorted(insp, last_peak_trough + 1)
+
+    # Determine which comes first in original order
+    first_source = None
+    first_value = None
+
+    if exsp_idx < len(exsp) and insp_idx < len(insp):
+        # Compare actual positions in original arrays
+        if exsp[exsp_idx] < insp[insp_idx]:
+            first_source = 'exsp'
+            first_value = exsp[exsp_idx]
+        else:
+            first_source = 'insp'
+            first_value = insp[insp_idx]
+    elif exsp_idx < len(exsp):
+        first_source = 'exsp'
+        first_value = exsp[exsp_idx]
+    elif insp_idx < len(insp):
+        first_source = 'insp'
+        first_value = insp[insp_idx]
+
+    # Remove all other values greater than X
+    if first_source == 'exsp':
+        exsp = np.concatenate([exsp[:exsp_idx], [first_value]])
+        insp = insp[:insp_idx]
+    elif first_source == 'insp':
+        insp = np.concatenate([insp[:insp_idx], [first_value]])
+        exsp = exsp[:exsp_idx]
+
+    return insp, exsp

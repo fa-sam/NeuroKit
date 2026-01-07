@@ -14,6 +14,7 @@ def flw_process(
     sampling_rate=100,
     method="khodadad2018",
     method_rvt="cycle",
+    pad_length=0,
     **kwargs
 ):
     """**Process a respiration airflow signal**
@@ -37,6 +38,10 @@ def flw_process(
     method_rvt : str
         The rvt method to apply. Can be one of ``"cycle"`` (default), ``"continuous"``,
         or ``"cycle"``.
+    pad_length : float
+        The length of padding in seconds from both sides of the signal. If the signal is padded from both sides, we use the whole
+        signal for filtering (flw_clean) and peak detection, but only consider the part without padding for the
+        feature analysis.
     **kwargs
         Other arguments to be passed to specific methods. For more information,
         see :func:`.rsp_methods`.
@@ -67,7 +72,12 @@ def flw_process(
             "FLW_Amplitude"|The breathing amplitude in each breath,
             "FLW_RVT"|Respiratory volume per time (RVT) for each breath.
 
+    .. note::
 
+      The pad_length parameter is used when we already padded the input flw_signal from both side, either with
+      constant value or be real flow values from previous and next epoch. The padding helps the peak detection
+      algorithm to detect more peaks and troughs in the real interval. Otherwise, one or more peaks/troughs
+      from beginning or end of signal might be missed by the find_peaks function.
 
     See Also
     --------
@@ -89,31 +99,38 @@ def flw_process(
     )
 
     # Extract, fix and format peaks
-    peak_signal, peaks_info = flw_peaks(
+    _, peaks_info = flw_peaks(
         flw_cleaned,
         sampling_rate=sampling_rate,
         method=method,
         amplitude_min=0.3,
     )
 
-    # Get additional parameters
-    _, amp_info = flw_amplitude(flw_cleaned, peak_signal)
+    if pad_length >0:
+        flw_cleaned, flw_signal, peaks_info = _fix_padded_params(flw_cleaned, flw_signal, peaks_info, sampling_rate, pad_length)
 
-    symmetry_info = flw_symmetry(flw_cleaned, peak_signal)
+    peaks = peaks_info["FLW_Peaks"]
+    troughs = peaks_info["FLW_Troughs"]
+
+    # Get additional parameters
+    _, amp_info = flw_amplitude(flw_cleaned, {'FLW_Peaks':peaks, 'FLW_Troughs':troughs})
+
+    symmetry_info = flw_symmetry(flw_cleaned, {'FLW_Peaks':peaks, 'FLW_Troughs':troughs})
 
     _, rvt_info = flw_rvt(
         flw_cleaned,
+        peaks_info,
         method=method_rvt,
         sampling_rate=sampling_rate
     )
-    time_info = flw_time(flw_cleaned, sampling_rate)
+    time_info = flw_time(flw_cleaned, peaks_info, sampling_rate)
 
     process_info = {
-        "FLW_Amplitude": amp_info["FLW_Amplitude"],
         "FLW_MVF": rvt_info["FLW_MVF"],
         "FLW_Tidal_Volume": rvt_info["FLW_Tidal_Volume"],
     }
     process_info.update(peaks_info)
+    process_info.update(amp_info)
     process_info.update(symmetry_info)
     process_info.update(time_info)
 
@@ -129,3 +146,26 @@ def flw_process(
     )
     return signals, process_info
 
+def _fix_padded_params(flw_cleaned, flw_signal, peaks_info, sampling_rate, pad_length):
+
+    low_ind = int(sampling_rate * pad_length)
+    high_ind = len(flw_cleaned) - low_ind
+
+    peaks = peaks_info['FLW_Peaks']
+    troughs = peaks_info['FLW_Troughs']
+    insp_onsets = peaks_info['FLW_InspirationOnsets']
+    exsp_onsets = peaks_info['FLW_ExpirationOnsets']
+
+    peaks = peaks[(low_ind < peaks) & (peaks < high_ind)] - low_ind
+    troughs = troughs[(low_ind < troughs) & (troughs < high_ind)] - low_ind
+    insp_onsets = insp_onsets[(low_ind < insp_onsets) & (insp_onsets < high_ind)] - low_ind
+    exsp_onsets = exsp_onsets[(low_ind < exsp_onsets) & (exsp_onsets < high_ind)] - low_ind
+
+    peaks_info["FLW_Peaks"] = peaks
+    peaks_info["FLW_Troughs"] = troughs
+    peaks_info["FLW_InspirationOnsets"] = insp_onsets
+    peaks_info["FLW_ExpirationOnsets"] = exsp_onsets
+
+    flw_cleaned = flw_cleaned[low_ind:high_ind]
+    flw_signal = flw_signal[low_ind:high_ind]
+    return flw_cleaned, flw_signal, peaks_info

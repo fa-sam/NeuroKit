@@ -9,7 +9,7 @@ from ..misc import NeuroKitWarning, find_closest
 from ..stats import rescale
 from ..rsp.rsp_fixpeaks import _rsp_fixpeaks_retrieve
 from .flw_amplitude import _flw_fixpeaks_retrieve
-from .flw_onsets import find_onsets
+from .flw_onsets import find_onsets, _flw_fix_onsets
 
 def flw_symmetry(
     flw_cleaned,
@@ -71,25 +71,16 @@ def flw_symmetry(
     # peaks, troughs = _flw_fixpeaks_retrieve(peaks, troughs)
     # Sanity checks -----------------------------------------------------------
     failed_checks = False
-    if len(peaks) <= 4 or len(troughs) <= 4:
+    if len(peaks) <= 2 or len(troughs) <= 2:
         warn(
             "Not enough peaks and troughs (signal too short?) to compute symmetry"
-            + ", returning nan for symmetry.",
+            " returning nan for symmetry.",
             category=NeuroKitWarning,
         )
         failed_checks = True
 
-    # if np.any(peaks - troughs < 0):
-    #     warn(
-    #         "Peaks and troughs are not correctly aligned (i.e., not consecutive)"
-    #         + ", returning nan for symmetry.",
-    #         category=NeuroKitWarning,
-    #     )
-    #     failed_checks = True
-
     if failed_checks:
         return {
-            "FLW_Symmetry_PeakTrough": np.array([]),
             "FLW_Symmetry_RiseDecay": np.array([]),
             "FLW_Expiration_Symmetry": np.array([]),
             "FLW_Inspiration_Symmetry": np.array([]),
@@ -103,6 +94,8 @@ def flw_symmetry(
     onsets = find_onsets(flw_cleaned, sampling_rate)
     insp_onsets = onsets["FLW_InspirationOnsets"]
     exsp_onsets = onsets["FLW_ExpirationOnsets"]
+    insp_onsets, exsp_onsets = _flw_fix_onsets(peaks, troughs, insp_onsets, exsp_onsets)
+    exsp_onsets_backup = exsp_onsets.copy()
 
     exsp_symmetry = []
     insp_symmetry = []
@@ -130,7 +123,7 @@ def flw_symmetry(
         insp_exsp_ratios.append(insp_exsp_ratio)
 
 
-    exsp_onsets = onsets["FLW_ExpirationOnsets"]  # in case it has been changed
+    exsp_onsets = exsp_onsets_backup  # in case it has been changed
     if insp_onsets[0] < exsp_onsets[0]:
         insp_onsets = insp_onsets[1:]
     for exsp, insp in zip(exsp_onsets, insp_onsets):
@@ -150,54 +143,22 @@ def flw_symmetry(
         raise ValueError("Expiration symmetry values must be positive.")
 
     # Rise-decay symmetry
-    peaks, troughs = _flw_fixpeaks_retrieve(peaks, troughs, sequence='trough-first')
+    risedecay_symmetry = _compute_rise_decay_symmetry(peaks, troughs)
 
-    through_to_peak = peaks - troughs
-    peak_to_through = troughs[1:] - peaks[:-1]
-    risedecay_symmetry = through_to_peak[:-1] / (through_to_peak[:-1] + peak_to_through)
-
-    # Find half-way points (trough to peak)
-    halfway_values = (flw_cleaned[peaks] - flw_cleaned[troughs]) / 2
-    halfway_values += flw_cleaned[troughs]
-    halfway_locations = np.zeros(len(halfway_values))
-    for i in range(len(peaks)):
-        segment = flw_cleaned[troughs[i] : peaks[i]]
-        halfway_locations[i] = (
-            find_closest(halfway_values[i], segment, return_index=True) + troughs[i]
-        )
-
-    # Find half-way points (peak to next through)
-    halfway_values2 = (flw_cleaned[peaks[:-1]] - flw_cleaned[troughs[1::]]) / 2
-    halfway_values2 += flw_cleaned[troughs[1::]]
-    halfway_locations2 = np.zeros(len(halfway_values2))
-    for i in range(len(peaks[:-1])):
-        segment = flw_cleaned[peaks[i] : troughs[i + 1]]
-        halfway_locations2[i] = (
-            find_closest(halfway_values2[i], segment, return_index=True) + peaks[i]
-        )
-
-    # Peak-trough symmetry
-    asc_to_desc = halfway_locations2[1:] - halfway_locations[1:-1]
-    desc_to_asc = halfway_locations[1:-1] - halfway_locations2[:-1]
-    peaktrough_symmetry = desc_to_asc / (asc_to_desc + desc_to_asc)
-
+    # peaks, troughs = _flw_fixpeaks_retrieve(peaks, troughs, sequence='trough-first')
+    # through_to_peak = peaks - troughs
+    # peak_to_through = troughs[1:] - peaks[:-1]
+    # risedecay_symmetry = through_to_peak[:-1] / (through_to_peak[:-1] + peak_to_through)
 
     if show is True:
         normalized = rescale(flw_cleaned)  # Rescale to 0-1
         plt.plot(normalized, color="grey", label="Respiration (normalized)")
         plt.scatter(peaks, normalized[peaks], color="red")
         plt.scatter(troughs, normalized[troughs], color="blue")
-        plt.scatter(halfway_locations, normalized[halfway_locations.astype(int)], color="orange")
-        plt.scatter(
-            halfway_locations2, normalized[halfway_locations2.astype(int)], color="darkgreen"
-        )
-
         plt.plot(peaks[1:], risedecay_symmetry , color="purple", label="Rise-decay symmetry")
-        plt.plot(peaks[1:], peaktrough_symmetry, color="green", label="Peak-trough symmetry")
         plt.legend()
 
     info = {
-        "FLW_Symmetry_PeakTrough": peaktrough_symmetry,
         "FLW_Symmetry_RiseDecay": risedecay_symmetry,
         "FLW_Expiration_Symmetry": np.asarray(exsp_symmetry),
         "FLW_Inspiration_Symmetry": np.asarray(insp_symmetry),
@@ -205,3 +166,100 @@ def flw_symmetry(
     }
     return info
 
+
+
+def _compute_rise_decay_symmetry(peaks, troughs):
+    """
+    Compute rise-decay symmetry even if peaks and troughs have different lengths.
+
+    Parameters:
+        peaks (array-like): Indices of peaks
+        troughs (array-like): Indices of troughs
+
+    Returns:
+        np.ndarray: Array of rise-decay symmetry values
+    """
+
+    through_to_peak = []
+    peak_to_through = []
+
+    # Compute trough → next peak distances
+    for t in troughs:
+        next_peak = peaks[peaks > t]
+        if len(next_peak) > 0:
+            through_to_peak.append(next_peak[0] - t)
+
+    # Compute peak → next trough distances
+    for p in peaks:
+        next_trough = troughs[troughs > p]
+        if len(next_trough) > 0:
+            peak_to_through.append(next_trough[0] - p)
+
+    # Convert to arrays
+    through_to_peak = np.array(through_to_peak)
+    peak_to_through = np.array(peak_to_through)
+
+    # Match lengths for symmetry calculation
+    min_len = min(len(through_to_peak), len(peak_to_through))
+    risedecay_symmetry = through_to_peak[:min_len] / (through_to_peak[:min_len] + peak_to_through[:min_len])
+
+    return risedecay_symmetry
+
+def _compute_peak_trough_symmetry(halfway_locations, halfway_locations2):
+    """
+    Compute peak-trough symmetry without assuming equal array lengths.
+
+    Parameters:
+        halfway_locations (array-like): First set of halfway points
+        halfway_locations2 (array-like): Second set of halfway points
+
+    Returns:
+        np.ndarray: Array of peak-trough symmetry values
+    """
+
+    asc_to_desc = []
+    desc_to_asc = []
+
+    # Iterate through consecutive pairs dynamically
+    for i in range(len(halfway_locations) - 1):
+        # Find next element in halfway_locations2 after halfway_locations[i]
+        next_desc = halfway_locations2[halfway_locations2 > halfway_locations[i]]
+        if len(next_desc) > 0:
+            asc_to_desc.append(next_desc[0] - halfway_locations[i + 1])
+
+    for i in range(len(halfway_locations2) - 1):
+        # Find next element in halfway_locations after halfway_locations2[i]
+        next_asc = halfway_locations[halfway_locations > halfway_locations2[i]]
+        if len(next_asc) > 0:
+            desc_to_asc.append(next_asc[0] - halfway_locations2[i])
+
+    # Convert to arrays and match lengths
+    asc_to_desc = np.array(asc_to_desc)
+    desc_to_asc = np.array(desc_to_asc)
+    min_len = min(len(asc_to_desc), len(desc_to_asc))
+
+    if min_len == 0:
+        return np.array([])  # No valid pairs
+
+    peaktrough_symmetry = desc_to_asc[:min_len] / (asc_to_desc[:min_len] + desc_to_asc[:min_len])
+    return peaktrough_symmetry
+
+def _find_halfway_points(flw_cleaned, peaks, troughs):
+    extrema = [(p, 'peak') for p in peaks] + [(t, 'trough') for t in troughs]
+    points_sorted = sorted(extrema, key=lambda x: x[0])
+
+    positions = [p[0] for p in points_sorted]
+    types = [p[1] for p in points_sorted]
+    for i in range(len(points_sorted)-1):
+        point1 = positions[i]
+        point2 = positions[i+1]
+        halfway_value = (flw_cleaned[point1] + flw_cleaned[point2])/2
+        segment = flw_cleaned[point1: point2]
+        halfway_location = find_closest(halfway_value, segment, return_index=True) + point1
+
+        if types[i] == 'peak' and types[i+1] == 'trough':
+            pass
+        elif types[i] == 'trough' and types[i+1] == 'peak':
+            pass
+        else:
+            pass

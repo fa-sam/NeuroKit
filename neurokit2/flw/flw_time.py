@@ -4,7 +4,7 @@ import numpy as np
 from .flw_peaks import flw_peaks
 
 
-def flw_time(flw_cleaned, sampling_rate=100, method="khodadad2018"):
+def flw_time(flw_cleaned, peaks_info, sampling_rate=100, method="khodadad2018"):
     """
         It calculates the inspiration time, expiration time and the respiratory intervals using the airflow signal.
         It uses the ``.flw_peaks`` function to detect the troughs, inspiration onsets and expiration onsets.
@@ -13,6 +13,8 @@ def flw_time(flw_cleaned, sampling_rate=100, method="khodadad2018"):
         ----------
         flw_cleaned : np.ndarray
             Airflow signal (L/s or mL/s). Ideally, inspiration is positive and expiration negative.
+        peaks_info : dict
+            A dict containing the locations of peaks, troughs, inspiration onsets and expiration onsets.
         sampling_rate : float
             Sampling rate in Hz.
 
@@ -25,12 +27,14 @@ def flw_time(flw_cleaned, sampling_rate=100, method="khodadad2018"):
               "FLW_RRI": np.ndarray
             }
         """
-    # Extract, fix and format peaks
-    peak_signal, peaks_info = flw_peaks(
-        flw_cleaned,
-        sampling_rate=sampling_rate,
-        method=method
-    )
+
+    if peaks_info is None:
+        # Extract, fix and format peaks
+        peak_signal, peaks_info = flw_peaks(
+            flw_cleaned,
+            sampling_rate=sampling_rate,
+            method=method
+        )
 
     insp_onsets = peaks_info["FLW_InspirationOnsets"]
     exsp_onsets = peaks_info["FLW_ExpirationOnsets"]
