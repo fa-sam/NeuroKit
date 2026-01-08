@@ -111,9 +111,11 @@ def flw_process(
 
     peaks = peaks_info["FLW_Peaks"]
     troughs = peaks_info["FLW_Troughs"]
+    insp_onsets = peaks_info["FLW_InspirationOnsets"]
 
     # Get additional parameters
-    _, amp_info = flw_amplitude(flw_cleaned, {'FLW_Peaks':peaks, 'FLW_Troughs':troughs})
+    # _, amp_info = flw_amplitude(flw_cleaned, {'FLW_Peaks':peaks, 'FLW_Troughs':troughs})
+    _, amp_info = flw_amplitude(flw_cleaned, peaks={'FLW_Peaks':peaks, 'FLW_Troughs':troughs}, inspiration_onsets=insp_onsets, method='max-min')
 
     symmetry_info = flw_symmetry(flw_cleaned, {'FLW_Peaks':peaks, 'FLW_Troughs':troughs})
 

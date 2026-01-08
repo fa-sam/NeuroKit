@@ -5,8 +5,7 @@ import numpy as np
 from ..signal import signal_interpolate
 from ..rsp.rsp_fixpeaks import _rsp_fixpeaks_retrieve
 
-
-def flw_amplitude(flw_cleaned, peaks, troughs=None, method="standard", interpolation_method="monotone_cubic"):
+def flw_amplitude(flw_cleaned, peaks, troughs=None, inspiration_onsets=None, method="standard", interpolation_method="monotone_cubic"):
     """**Compute respiratory amplitude from airflow**
 
     Compute respiratory amplitude given the raw respiration signal and its extrema. The
@@ -25,8 +24,11 @@ def flw_amplitude(flw_cleaned, peaks, troughs=None, method="standard", interpola
     troughs : list or array or DataFrame or Series or dict
         The samples at which the respiration troughs occur. If a dict or a
         is passed, it is assumed that these containers were obtained with :func:`.flw_findpeaks`.
+    inspiration_onsets : list or array
+        The samples at which the inspiration onsets occur. It is needed if the method is ``"max-min"``, otherwise
+        it is not required.
     method : str
-        The method to use to compute the amplitude. Can be ``"standard"`` or ``"prepost"``.
+        The method to use to compute the amplitude. Can be ``"standard"`` or ``"prepost"`` or ``"max-min"``.
     interpolation_method : str
         Method used to interpolate the amplitude between peaks. See :func:`.signal_interpolate`.
         ``"monotone_cubic"`` is chosen as the default interpolation method since it ensures monotone
@@ -57,6 +59,43 @@ def flw_amplitude(flw_cleaned, peaks, troughs=None, method="standard", interpola
     # Make sure `flw_cleaned` is a np.array
     flw_cleaned = np.array(flw_cleaned)
 
+    if method == 'max-min':
+        amplitude_per_breath = _max_min_amplitude(flw_cleaned, inspiration_onsets)
+        # Interpolate amplitude to length of flw_cleaned.
+        if len(inspiration_onsets) == 1:
+            amplitude = np.full(flw_cleaned.shape, amplitude_per_breath[0])
+        else:
+            amplitude = signal_interpolate(inspiration_onsets[:-1], amplitude_per_breath, x_new=np.arange(len(flw_cleaned)),
+                                           method=interpolation_method)
+    else:
+        amplitude_per_breath = _calculate_amplitude(flw_cleaned, peaks, troughs, method)
+        # Interpolate amplitude to length of flw_cleaned.
+        if len(peaks) == 1:
+            amplitude = np.full(flw_cleaned.shape, amplitude_per_breath[0])
+        else:
+            amplitude = signal_interpolate(peaks, amplitude_per_breath, x_new=np.arange(len(flw_cleaned)),
+                                           method=interpolation_method)
+
+    info = {'FLW_Amplitude': amplitude_per_breath}
+
+    return amplitude, info
+
+def _max_min_amplitude(flw_cleaned, inspiration_onsets):
+    if inspiration_onsets is None:
+        raise ValueError('When using method="max-min", the inspiration_onsets cannot be None.')
+
+    amplitudes = []
+    for i in range(len(inspiration_onsets)-1):
+        onset1 = inspiration_onsets[i]
+        onset2 = inspiration_onsets[i+1]
+        max_flow = max(flw_cleaned[onset1:onset2])
+        min_flow = min(flw_cleaned[onset1:onset2])
+        amplitude = max_flow - min_flow
+        amplitudes.append(amplitude)
+    return amplitudes
+
+def _calculate_amplitude(flw_cleaned, peaks, troughs, method):
+
     # Format input.
     peaks, troughs = _rsp_fixpeaks_retrieve(peaks, troughs)
 
@@ -83,15 +122,7 @@ def flw_amplitude(flw_cleaned, peaks, troughs=None, method="standard", interpola
         amplitude[0:-1] += flw_cleaned[peaks[0:-1]] - flw_cleaned[troughs[1::]]
         amplitude[0:-1] /= 2
 
-    info = {'FLW_Amplitude': amplitude}
-
-    # Interpolate amplitude to length of flw_cleaned.
-    if len(peaks) == 1:
-        amplitude = np.full(flw_cleaned.shape, amplitude[0])
-    else:
-        amplitude = signal_interpolate(peaks, amplitude, x_new=np.arange(len(flw_cleaned)), method=interpolation_method)
-
-    return amplitude, info
+    return amplitude
 
 def _flw_fixpeaks_retrieve(peaks, troughs, sequence='peak-first'):
     if sequence == 'peak-first':
