@@ -99,15 +99,20 @@ def flw_process(
     )
 
     # Extract, fix and format peaks
-    _, peaks_info = flw_peaks(
+    peaks_signal, peaks_info = flw_peaks(
         flw_cleaned,
         sampling_rate=sampling_rate,
+        pad_length=pad_length,
         method=method,
         amplitude_min=0.3,
     )
+    flw_cleaned = peaks_signal['FLW_Clean'] # the original flw_cleaned might be with padding, we get the updated one here.
 
     if pad_length >0:
-        flw_cleaned, flw_signal, peaks_info = _fix_padded_params(flw_cleaned, flw_signal, peaks_info, sampling_rate, pad_length)
+        low_ind = int(sampling_rate * pad_length)
+        high_ind = len(flw_signal) - low_ind
+        flw_signal = flw_signal[low_ind:high_ind]
+        # flw_cleaned, flw_signal, peaks_info = _fix_padded_params(flw_cleaned, flw_signal, peaks_info, sampling_rate, pad_length)
 
     peaks = peaks_info["FLW_Peaks"]
     troughs = peaks_info["FLW_Troughs"]
@@ -148,26 +153,26 @@ def flw_process(
     )
     return signals, process_info
 
-def _fix_padded_params(flw_cleaned, flw_signal, peaks_info, sampling_rate, pad_length):
-
-    low_ind = int(sampling_rate * pad_length)
-    high_ind = len(flw_cleaned) - low_ind
-
-    peaks = peaks_info['FLW_Peaks']
-    troughs = peaks_info['FLW_Troughs']
-    insp_onsets = peaks_info['FLW_InspirationOnsets']
-    exsp_onsets = peaks_info['FLW_ExpirationOnsets']
-
-    peaks = peaks[(low_ind < peaks) & (peaks < high_ind)] - low_ind
-    troughs = troughs[(low_ind < troughs) & (troughs < high_ind)] - low_ind
-    insp_onsets = insp_onsets[(low_ind < insp_onsets) & (insp_onsets < high_ind)] - low_ind
-    exsp_onsets = exsp_onsets[(low_ind < exsp_onsets) & (exsp_onsets < high_ind)] - low_ind
-
-    peaks_info["FLW_Peaks"] = peaks
-    peaks_info["FLW_Troughs"] = troughs
-    peaks_info["FLW_InspirationOnsets"] = insp_onsets
-    peaks_info["FLW_ExpirationOnsets"] = exsp_onsets
-
-    flw_cleaned = flw_cleaned[low_ind:high_ind]
-    flw_signal = flw_signal[low_ind:high_ind]
-    return flw_cleaned, flw_signal, peaks_info
+# def _fix_padded_params(flw_cleaned, flw_signal, peaks_info, sampling_rate, pad_length):
+#
+#     low_ind = int(sampling_rate * pad_length)
+#     high_ind = len(flw_cleaned) - low_ind
+#
+#     peaks = peaks_info['FLW_Peaks']
+#     troughs = peaks_info['FLW_Troughs']
+#     insp_onsets = peaks_info['FLW_InspirationOnsets']
+#     exsp_onsets = peaks_info['FLW_ExpirationOnsets']
+#
+#     peaks = peaks[(low_ind < peaks) & (peaks < high_ind)] - low_ind
+#     troughs = troughs[(low_ind < troughs) & (troughs < high_ind)] - low_ind
+#     insp_onsets = insp_onsets[(low_ind < insp_onsets) & (insp_onsets < high_ind)] - low_ind
+#     exsp_onsets = exsp_onsets[(low_ind < exsp_onsets) & (exsp_onsets < high_ind)] - low_ind
+#
+#     peaks_info["FLW_Peaks"] = peaks
+#     peaks_info["FLW_Troughs"] = troughs
+#     peaks_info["FLW_InspirationOnsets"] = insp_onsets
+#     peaks_info["FLW_ExpirationOnsets"] = exsp_onsets
+#
+#     flw_cleaned = flw_cleaned[low_ind:high_ind]
+#     flw_signal = flw_signal[low_ind:high_ind]
+#     return flw_cleaned, flw_signal, peaks_info

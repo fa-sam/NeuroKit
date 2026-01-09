@@ -30,7 +30,7 @@ def flw_time(flw_cleaned, peaks_info, sampling_rate=100, method="khodadad2018"):
 
     if peaks_info is None:
         # Extract, fix and format peaks
-        peak_signal, peaks_info = flw_peaks(
+        _, peaks_info = flw_peaks(
             flw_cleaned,
             sampling_rate=sampling_rate,
             method=method
