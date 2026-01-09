@@ -188,9 +188,8 @@ def _flw_fix_onsets(peaks, troughs, insp_onsets, exsp_onsets):
 
         last_peak_trough = events[-1]
         insp_onsets, exsp_onsets = _keep_only_first_onset_after_peakstroughs(insp_onsets, exsp_onsets, last_peak_trough)
+    insp_onsets, exsp_onsets = _enforce_order(insp_onsets, exsp_onsets)
     return insp_onsets, exsp_onsets
-
-
 
 def _keep_only_first_onset_after_peakstroughs(insp, exsp, last_peak_trough):
     # Find first index in each array where value > X
@@ -225,3 +224,19 @@ def _keep_only_first_onset_after_peakstroughs(insp, exsp, last_peak_trough):
         exsp = exsp[:exsp_idx]
 
     return insp, exsp
+
+def _enforce_order(insp_onsets, exsp_onsets):
+    ind = 0
+    N = len(insp_onsets) - 1
+    while ind < N:
+        insp_index = insp_onsets[ind]
+        exsp_index = exsp_onsets[ind]
+        next_insp = insp_onsets[ind + 1]
+        if exsp_index >= next_insp:
+            insp_onsets = np.delete(insp_onsets, ind)
+        elif exsp_index <= insp_index:
+            exsp_onsets = np.delete(exsp_onsets, ind)
+        ind += 1
+        N = len(insp_onsets) - 1
+
+    return insp_onsets, exsp_onsets
