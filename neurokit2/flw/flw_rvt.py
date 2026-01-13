@@ -55,7 +55,7 @@ def flw_rvt(
 
     Examples
     --------
-    .. ipython:: python
+
 
 
     References

@@ -51,17 +51,6 @@ def flw_process(
     signals : DataFrame
         A DataFrame of same length as :func:`.rsp_signal` containing the following columns:
 
-        .. codebookadd::
-            FLW_Raw|The raw flow signal.
-            FLW_Clean|The filtered and cleaned flow signal.
-            FLW_Peaks|The respiratory flow peaks  marked as "1" in a list of zeros.
-            FLW_Troughs|The respiratory flow troughs  marked as "1" in a list of zeros.
-            FLW_Rate|The breathing rate interpolated between inhalation peaks.
-            RSP_Amplitude|The breathing amplitude interpolated between inhalation peaks.
-            RSP_Phase|The breathing phase, marked by "1" for inspiration and "0" for expiration.
-            RSP_Phase_Completion|The breathing phase completion, expressed in percentage \
-                (from 0 to 1), representing the stage of the current respiratory phase.
-            RSP_RVT|Respiratory volume per time (RVT).
 
     info : dict
         A dictionary containing:

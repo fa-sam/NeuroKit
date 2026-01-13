@@ -57,7 +57,7 @@ def flw_symmetry(
 
     Examples
     --------
-    .. ipython:: python
+
 
 
     References

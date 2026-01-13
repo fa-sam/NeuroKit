@@ -133,7 +133,7 @@ def signal_plot(signal, sampling_rate=None, subplots=False, standardize=False, l
         for col in events_columns:
             vector = signal[col]
             events.append(np.where(vector == np.max(vector.unique()))[0])
-        events_plot(events, signal=signal[continuous_columns])
+        events_plot(events, signal=signal[continuous_columns], labels=events_columns)
         if sampling_rate is None and pd.api.types.is_integer_dtype(signal.index):
             plt.gca().set_xlabel("Samples")
         else:

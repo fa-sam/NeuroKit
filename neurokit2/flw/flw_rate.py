@@ -54,7 +54,7 @@ def flw_rate(
 
     Example
     -------
-    .. ipython:: python
+
 
     """
 

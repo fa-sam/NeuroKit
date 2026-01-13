@@ -41,7 +41,7 @@ def flw_rav(
 
     Examples
     --------
-    .. ipython:: python
+
 
     """
 

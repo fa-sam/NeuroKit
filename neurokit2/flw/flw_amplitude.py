@@ -47,7 +47,7 @@ def flw_amplitude(flw_cleaned, peaks, troughs=None, inspiration_onsets=None, met
 
     Examples
     --------
-    .. ipython:: python
+
 
 
     References

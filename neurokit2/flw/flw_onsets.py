@@ -15,6 +15,7 @@ def find_onsets(
 
     Parameters
     ----------
+
     flw_cleaned : np.ndarray
         Airflow signal (L/s or mL/s). Ideally, inspiration is positive and expiration negative.
     sampling_rate : float
@@ -32,11 +33,13 @@ def find_onsets(
     Returns
     -------
     dict
-        {
-          "FLW_InspirationOnsets":np.ndarray,
-          "FLW_ExpirationOnsets": np.ndarray
-        }
+    {
+      "FLW_InspirationOnsets":np.ndarray,
+      "FLW_ExpirationOnsets": np.ndarray
+    }
+
     """
+
     flw_cleaned = np.asarray(flw_cleaned).astype(float)
     N = len(flw_cleaned)
     if N == 0:
@@ -226,6 +229,13 @@ def _keep_only_first_onset_after_peakstroughs(insp, exsp, last_peak_trough):
     return insp, exsp
 
 def _enforce_order(insp_onsets, exsp_onsets):
+    reverse = False
+    if exsp_onsets[0] < insp_onsets[-1]:
+        reverse = True
+        insp_onsets_copy = insp_onsets.copy()
+        insp_onsets = exsp_onsets.copy()
+        exsp_onsets = insp_onsets_copy
+
     ind = 0
     N = len(insp_onsets) - 1
     while ind < N:
@@ -238,5 +248,7 @@ def _enforce_order(insp_onsets, exsp_onsets):
             exsp_onsets = np.delete(exsp_onsets, ind)
         ind += 1
         N = len(insp_onsets) - 1
-
-    return insp_onsets, exsp_onsets
+    if reverse:
+        return exsp_onsets, insp_onsets
+    else:
+        return insp_onsets, exsp_onsets
