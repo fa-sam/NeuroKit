@@ -68,11 +68,12 @@ def flw_amplitude(flw_cleaned, peaks, troughs=None, inspiration_onsets=None, met
             amplitude = signal_interpolate(inspiration_onsets[:-1], amplitude_per_breath, x_new=np.arange(len(flw_cleaned)),
                                            method=interpolation_method)
     else:
-        amplitude_per_breath = _calculate_amplitude(flw_cleaned, peaks, troughs, method)
+        amplitude_per_breath, peaks, troughs = _calculate_amplitude(flw_cleaned, peaks, troughs, method)
         # Interpolate amplitude to length of flw_cleaned.
         if len(peaks) == 1:
             amplitude = np.full(flw_cleaned.shape, amplitude_per_breath[0])
         else:
+
             amplitude = signal_interpolate(peaks, amplitude_per_breath, x_new=np.arange(len(flw_cleaned)),
                                            method=interpolation_method)
 
@@ -122,7 +123,7 @@ def _calculate_amplitude(flw_cleaned, peaks, troughs, method):
         amplitude[0:-1] += flw_cleaned[peaks[0:-1]] - flw_cleaned[troughs[1::]]
         amplitude[0:-1] /= 2
 
-    return amplitude
+    return amplitude, peaks, troughs
 
 def _flw_fixpeaks_retrieve(peaks, troughs, sequence='peak-first'):
     if sequence == 'peak-first':
