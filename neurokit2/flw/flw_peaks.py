@@ -121,15 +121,15 @@ def _fix_peaks(flw_cleaned, peaks, troughs):
         low_ind = max(0, p-10)
         high_ind = min(len(flw_cleaned), p+10)
         if max(flw_cleaned[low_ind:high_ind]) <= flw_cleaned[p]:
-            new_peaks.append(p)
+            new_peaks.append(int(p))
 
     for t in troughs:
         low_ind = max(0, t - 10)
         high_ind = min(len(flw_cleaned), t + 10)
         if min(flw_cleaned[low_ind:high_ind]) >= flw_cleaned[t]:
-            new_troughs.append(t)
+            new_troughs.append(int(t))
 
-    return new_peaks, new_troughs
+    return np.array(new_peaks), np.array(new_troughs)
 
 def _fix_padded_params(flw_cleaned, peaks_info, sampling_rate, pad_length):
 
