@@ -175,7 +175,7 @@ def _flw_findpeaks_outliers(flw_cleaned, extrema, min_amplitude=1.5, amplitude_d
 
     # first remove those extrema whose amplitude doesn't reach the threshold
     vertical_values = np.abs(flw_cleaned[extrema])
-    min_amp = np.where(vertical_values > min_amplitude)
+    min_amp = np.where(vertical_values > min_amplitude)[0]
     extrema = extrema[min_amp]
 
     # Then consider those extrema that have a minimum vertical distance to
@@ -184,7 +184,7 @@ def _flw_findpeaks_outliers(flw_cleaned, extrema, min_amplitude=1.5, amplitude_d
     vertical_diff = np.abs(np.diff(flw_cleaned[extrema]))
     median_diff = np.median(vertical_diff)
     min_diff = np.where(vertical_diff > (median_diff * amplitude_diff))[0]
-    ind = np.append(min_diff, -1)   # keep the last extrema too. Otherwise it will be removed without a reason
+    ind = np.append(min_diff, -1)   # keep the last extrema too. Otherwise, it will be removed without a reason
     extrema = extrema[ind]
 
     # Make sure that the alternation of peaks and troughs is unbroken. If
