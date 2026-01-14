@@ -4,9 +4,10 @@ import pandas as pd
 
 from ..rsp.rsp_peaks import rsp_peaks
 from .flw_onsets import find_onsets, _flw_fix_onsets
+from .flw_findpeaks import flw_findpeaks
 from ..signal import signal_formatpeaks
 
-def flw_peaks(flw_cleaned, sampling_rate=100, pad_length=0, method="khodadad2018", **kwargs):
+def flw_peaks(flw_cleaned, sampling_rate=100, pad_length=0, method="fsa", **kwargs):
     """**Identify crucial points in an airflow respiration (FLW) signal**
 
         This function runs :func:`.find_onsets` and :func:`.rsp_peaks` to identify and process
@@ -29,7 +30,7 @@ def flw_peaks(flw_cleaned, sampling_rate=100, pad_length=0, method="khodadad2018
             The length of the padded signal (in seconds). All crucial points that are located in the padded part,
             will be omitted.
         method : str
-            The processing pipeline to apply. Can be one of ``"khodadad2018"`` (default), ``"biosppy"``
+            The processing pipeline to apply. Can be one of ``"fsa"`` (default), ``"khodadad2018"``, ``"biosppy"``
             or ``"scipy"``.
         **kwargs
             Other arguments to be passed to the different peak finding methods. See
@@ -78,11 +79,15 @@ def flw_peaks(flw_cleaned, sampling_rate=100, pad_length=0, method="khodadad2018
           Physiological measurement, 39(9), 094001.
 
         """
-    flw_info = find_onsets(flw_cleaned, sampling_rate=sampling_rate)
-    _, rsp_info = rsp_peaks(flw_cleaned, sampling_rate, method, **kwargs)
 
-    peaks = rsp_info['RSP_Peaks']
-    troughs = rsp_info['RSP_Troughs']
+    # _, rsp_info = rsp_peaks(flw_cleaned, sampling_rate, method, **kwargs)
+    info = flw_findpeaks(flw_cleaned, sampling_rate=sampling_rate, method=method, **kwargs)
+
+    peaks = info['FLW_Peaks']
+    troughs = info['FLW_Troughs']
+
+
+    flw_info = find_onsets(flw_cleaned, sampling_rate=sampling_rate)
     insp_onsets = flw_info["FLW_InspirationOnsets"]
     exsp_onsets = flw_info["FLW_ExpirationOnsets"]
 
@@ -96,15 +101,10 @@ def flw_peaks(flw_cleaned, sampling_rate=100, pad_length=0, method="khodadad2018
         "FLW_Troughs": troughs,
     }
     if pad_length >0:
-        # low_ind = int(sampling_rate * pad_length)
-        # high_ind = len(flw_cleaned) - low_ind
-        # peak_signal = peak_signal.iloc[low_ind:high_ind,:].reset_index(drop=True)
         flw_cleaned, peaks_info = _fix_padded_params(flw_cleaned, peaks_info, sampling_rate, pad_length)
 
-    # peak_signal['FLW_Clean'] = flw_cleaned
     onset_signal = signal_formatpeaks(peaks_info, desired_length=len(flw_cleaned))
     onset_signal['FLW_Clean'] = flw_cleaned
-    # signals = pd.concat([peak_signal, onset_signal], axis=1)
     return onset_signal, peaks_info
 
 def _fix_peaks(flw_cleaned, peaks, troughs):
