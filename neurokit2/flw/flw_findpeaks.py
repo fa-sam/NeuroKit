@@ -58,11 +58,11 @@ def flw_findpeaks(
 
       import neurokit2 as nk
 
-      flw = nk.flw_simulate(duration=30, respiratory_rate=15)
-      cleaned = nk.flw_clean(flw, sampling_rate=1000)
+      flw = nk.flw_simulate(duration=30, respiratory_rate=15, sampling_rate=100)
+      cleaned = nk.flw_clean(flw, sampling_rate=100)
       info = nk.flw_findpeaks(cleaned)
       @savefig p_flw_findpeaks1.png scale=100%
-      nk.events_plot([info["RSP_Peaks"], info["RSP_Troughs"]], cleaned)
+      nk.events_plot([info["FLW_Peaks"], info["FLW_Troughs"]], cleaned)
       @suppress
       plt.close()
 
@@ -201,17 +201,13 @@ def _flw_findpeaks_outliers(flw_cleaned, extrema, min_amplitude=1.5, amplitude_d
 
 
 def _flw_findpeaks_sanitize(extrema, amplitudes):
-    # # To be able to consistently calculate breathing amplitude, make sure that
-    # # the extrema always start with a trough and end with a peak, since
-    # # breathing amplitude will be defined as vertical distance between each
-    # # peak and the preceding trough. Note that this also ensures that the
-    # # number of peaks and troughs is equal.
-    # if amplitudes[0] > amplitudes[1]:
-    #     extrema = np.delete(extrema, 0)
-    # if amplitudes[-1] < amplitudes[-2]:
-    #     extrema = np.delete(extrema, -1)
-    # peaks = extrema[1::2]
-    # troughs = extrema[0:-1:2]
+    # The different from the _rsp_findpeaks_sanitize is that we do not enforce that
+    # the extrema always start with a trough and end with a peaks. Therefore, we
+    # keep more peaks and troughs. In addition, we  don't enforce that the number
+    # of peaks and trough is equal.
+    # We will do that in those functions where we expect a certain order
+    # and certain length of peaks/troughs, e.g. flw_amplitude
+
     if amplitudes[0] > amplitudes[1]:
         #starts with peak
         peaks = extrema[0::2]

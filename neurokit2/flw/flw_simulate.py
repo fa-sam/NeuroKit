@@ -3,7 +3,7 @@ from ..rsp.rsp_simulate import rsp_simulate
 def flw_simulate(
     duration=10,
     length=None,
-    sampling_rate=1000,
+    sampling_rate=100,
     noise=0.01,
     respiratory_rate=15,
     random_state=None,
