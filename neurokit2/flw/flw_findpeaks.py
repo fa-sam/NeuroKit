@@ -178,6 +178,12 @@ def _flw_findpeaks_outliers(flw_cleaned, extrema, min_amplitude=1.5, amplitude_d
     min_amp = np.where(vertical_values > min_amplitude)[0]
     extrema = extrema[min_amp]
 
+    # from two neighboring peaks, select the one that is higher and from two direct neighboring troughs select the one that is lower
+    extrema_class = ["peak" if flw_cleaned[i] > flw_cleaned[i - 1] and flw_cleaned[i] > flw_cleaned[i + 1] else "trough"
+                     for i in extrema]
+    extrema_new = _merge_consecutive_extrema(flw_cleaned, extrema_indices=extrema, classes=extrema_class)
+    extrema = np.asarray(extrema_new)
+
     # Then consider those extrema that have a minimum vertical distance to
     # their direct neighbor, i.e., define outliers in absolute amplitude
     # difference between neighboring extrema.
@@ -217,3 +223,28 @@ def _flw_findpeaks_sanitize(extrema, amplitudes):
         troughs = extrema[0::2]
 
     return peaks, troughs
+
+
+
+def _merge_consecutive_extrema(signal, extrema_indices, classes):
+    merged_indices = []
+    i = 0
+    while i < len(extrema_indices):
+        current_class = classes[i]
+        if current_class in ["peak", "trough"]:
+            # Start a group of consecutive same-class extrema
+            best_idx = extrema_indices[i]
+            best_val = signal[best_idx]
+            j = i + 1
+            while j < len(extrema_indices) and classes[j] == current_class:
+                val = signal[extrema_indices[j]]
+                if (current_class == "peak" and val > best_val) or (current_class == "trough" and val < best_val):
+                    best_val = val
+                    best_idx = extrema_indices[j]
+                j += 1
+            merged_indices.append(best_idx)
+            i = j  # Skip all in this group
+        else:
+            merged_indices.append(extrema_indices[i])
+            i += 1
+    return merged_indices

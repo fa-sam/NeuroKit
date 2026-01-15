@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import json
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -29,8 +31,18 @@ cases = [
     # Add more cases as needed
 ]
 
-def load_flow(id=1):
-    flow = np.loadtxt(fr'Y:\Proj\Neurokit2\data\flow_sample{id}.txt')
+def load_test_results():
+    file_path = r'F:\BOX\Farzad\for Lukas\flw_test_results.json'
+    with open(file_path, 'r') as f:
+        test_results = json.load(f)
+        return test_results
+
+def load_flow(id=None, name=None):
+    flow = None
+    if id is not None:
+        flow = np.loadtxt(fr'Y:\Proj\Neurokit2\data\flow_sample{id}.txt')
+    elif name is not None:
+        flow = np.loadtxt(fr'Y:\Proj\Neurokit2\data\{name}')
     return flow
 
 
@@ -45,13 +57,20 @@ def test_flw_clean(file_id, method):
 
 
 
-@pytest.mark.parametrize("file_id", [1,2,3])
-@pytest.mark.parametrize("pad_length", [0,3,6])
+@pytest.mark.parametrize("file_id", ["003_943477.txt"])
+@pytest.mark.parametrize("pad_length", [0,5])
 def test_flw_peaks(file_id, pad_length):
-    flw = load_flow(file_id)
+    flw = load_flow(name=file_id)
+    test_results_json = load_test_results()
+    peaks_info = test_results_json[file_id][f"pad_len={pad_length}"]
     flw_cleaned = nk.flw_clean(flw, sampling_rate)
 
     signals, info = nk.flw_peaks(flw_cleaned, sampling_rate, pad_length=pad_length)
     flw_cleaned = signals['FLW_Clean']
     assert len(flw_cleaned) == len(flw)-2*pad_length*sampling_rate
+
+    assert peaks_info['FLW_Peaks'] == info["FLW_Peaks"].tolist()
+    assert peaks_info['FLW_Troughs'] == info["FLW_Troughs"].tolist()
+    assert peaks_info['FLW_InspirationOnsets'] == info["FLW_InspirationOnsets"].tolist()
+    assert peaks_info['FLW_ExpirationOnsets'] == info["FLW_ExpirationOnsets"].tolist()
 
