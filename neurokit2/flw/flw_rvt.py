@@ -120,7 +120,7 @@ def _flw_rvt_cycle(
         _, peaks_info = flw_peaks(
             flw_cleaned,
             sampling_rate=sampling_rate,
-            method="scipy",
+            # method="scipy",
             peak_distance=peak_distance,
             peak_prominence=peak_prominence,
         )

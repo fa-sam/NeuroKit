@@ -38,11 +38,10 @@ def flw_rrv(flw_rate, troughs=None, sampling_rate=100, show=False, silent=True):
         Returns
         -------
         DataFrame
-            DataFrame consisting of the computed RRV metrics, which includes:
-
-
-
-            * **MFDFA indices**: Indices related to the :func:`multifractal spectrum <.fractal_dfa()>`.
+            A DataFrame consisting of the computed RRV metrics, which includes:
+            "RRV_RMSSD", "RRV_MeanBB", "RRV_SDBB", "RRV_SDSD", "RRV_CVBB", "RRV_CVSD", "RRV_MedianBB",
+            "RRV_MadBB", "RRV_MCVBB", "RRV_VLF", "RRV_LF", "RRV_HF", "RRV_LFHF", "RRV_LFn", "RRV_HFn",
+            "RRV_SD1", "RRV_SD2", "RRV_SD2SD1", "RRV_ApEn", "RRV_SampEn",
 
 
         See Also

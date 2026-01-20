@@ -69,6 +69,12 @@ def flw_symmetry(
     # Format input.
     peaks, troughs = _rsp_fixpeaks_retrieve(peaks, troughs)
     # peaks, troughs = _flw_fixpeaks_retrieve(peaks, troughs)
+    empty_info = {
+            "FLW_Symmetry_RiseDecay": np.array([]),
+            "FLW_Expiration_Symmetry": np.array([]),
+            "FLW_Inspiration_Symmetry": np.array([]),
+            "FLW_InspExp_Ratio": np.array([]),
+        }
     # Sanity checks -----------------------------------------------------------
     failed_checks = False
     if len(peaks) <= 2 or len(troughs) <= 2:
@@ -77,15 +83,7 @@ def flw_symmetry(
             " returning nan for symmetry.",
             category=NeuroKitWarning,
         )
-        failed_checks = True
-
-    if failed_checks:
-        return {
-            "FLW_Symmetry_RiseDecay": np.array([]),
-            "FLW_Expiration_Symmetry": np.array([]),
-            "FLW_Inspiration_Symmetry": np.array([]),
-            "FLW_InspExp_Ratio": np.array([]),
-        }
+        return empty_info
 
     # Compute symmetry features -----------------------------------------------
     # See https://twitter.com/bradleyvoytek/status/1591495571269124096/photo/1
@@ -107,7 +105,10 @@ def flw_symmetry(
 
         pk = peaks[(insp<peaks) & (peaks<exsp)]  # peak must be between insp and exsp onset
         if len(pk) >1:
-            raise ValueError('Found more than one peak between inspiration onset and expiration onset.')
+            warn('Found more than one peak between inspiration onset and expiration onset.',
+                category=NeuroKitWarning,
+            )
+            return empty_info
         elif len(pk)==1:
             pk = pk[0]
             insp_symmetry.append((pk-insp)/(exsp-pk))
@@ -131,16 +132,26 @@ def flw_symmetry(
 
         tr = troughs[(exsp<troughs) & (troughs<insp)]
         if len(tr) > 1:
-            raise ValueError('Found more than one trough between inspiration onset and expiration onset.')
+            warn('Found more than one trough between inspiration onset and expiration onset.',
+                category=NeuroKitWarning,
+            )
+            return empty_info
+
         elif len(tr)==1:
             tr = tr[0]
             exsp_symmetry.append((tr-exsp)/(insp-tr))
 
     if np.any(np.array(insp_symmetry) < 0):
-        raise ValueError("Inspiration symmetry values must be positive.")
+        warn("Inspiration symmetry values must be positive.",
+            category=NeuroKitWarning,
+        )
+        return empty_info
 
     if np.any(np.array(exsp_symmetry) < 0):
-        raise ValueError("Expiration symmetry values must be positive.")
+        warn("Expiration symmetry values must be positive.",
+            category=NeuroKitWarning,
+        )
+        return empty_info
 
     # Rise-decay symmetry
     risedecay_symmetry = _compute_rise_decay_symmetry(peaks, troughs)

@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
+import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd
 
-from ..rsp.rsp_peaks import rsp_peaks
 from .flw_onsets import find_onsets, _flw_fix_onsets
 from .flw_findpeaks import flw_findpeaks
 from ..signal import signal_formatpeaks
@@ -91,6 +90,11 @@ def flw_peaks(flw_cleaned, sampling_rate=100, pad_length=0, method="fsa", **kwar
     insp_onsets = flw_info["FLW_InspirationOnsets"]
     exsp_onsets = flw_info["FLW_ExpirationOnsets"]
 
+    # peaks, troughs, insp_onsets, exsp_onsets = _remove_points_during_apnea(flw_cleaned, sampling_rate=sampling_rate,
+    #                                                                        peaks=peaks, troughs=troughs,
+    #                                                                        insp_onsets=insp_onsets,
+    #                                                                        exsp_onsets=exsp_onsets)
+
     peaks, troughs = _fix_peaks(flw_cleaned, peaks, troughs)
     insp_onsets, exsp_onsets = _flw_fix_onsets(peaks, troughs, insp_onsets, exsp_onsets)
 
@@ -106,6 +110,31 @@ def flw_peaks(flw_cleaned, sampling_rate=100, pad_length=0, method="fsa", **kwar
     onset_signal = signal_formatpeaks(peaks_info, desired_length=len(flw_cleaned))
     onset_signal['FLW_Clean'] = flw_cleaned
     return onset_signal, peaks_info
+
+def _remove_points_during_apnea(flw_cleaned, sampling_rate, peaks, troughs, insp_onsets, exsp_onsets):
+    arr = np.abs(flw_cleaned)
+    min_len = 2 * sampling_rate
+    groups = []
+    current = []
+    flow_threshold = 3
+
+    for ind, x in enumerate(arr):
+        if x < flow_threshold:
+            current.append(ind)
+        else:
+            if len(current) > min_len:
+                groups.append(current)
+            current = []
+    if len(current) > min_len:
+        groups.append(current)
+    if len(groups) == 0:
+        return peaks, troughs, insp_onsets, exsp_onsets
+    forbidden = np.unique(np.concatenate(groups))
+    peaks = peaks[~np.isin(peaks, forbidden)]
+    troughs = troughs[~np.isin(troughs, forbidden)]
+    insp_onsets = insp_onsets[~np.isin(insp_onsets, forbidden)]
+    exsp_onsets = exsp_onsets[~np.isin(exsp_onsets, forbidden)]
+    return peaks, troughs, insp_onsets, exsp_onsets
 
 def _fix_peaks(flw_cleaned, peaks, troughs):
     """

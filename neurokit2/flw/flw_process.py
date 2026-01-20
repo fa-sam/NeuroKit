@@ -93,7 +93,6 @@ def flw_process(
         sampling_rate=sampling_rate,
         pad_length=pad_length,
         method=method,
-        amplitude_min=0.3,
     )
     flw_cleaned = peaks_signal['FLW_Clean'] # the original flw_cleaned might be with padding, we get the updated one here.
 

@@ -85,8 +85,12 @@ def flw_findpeaks(
         info = _flw_findpeaks_fsa(cleaned, min_amplitude=min_amplitude, amplidute_diff=amplitude_diff)
     elif method in ["khodadad", "khodadad2018"]:
         info = _rsp_findpeaks_khodadad(cleaned, amplitude_min=amplitude_diff)
+        info['FLW_Peaks'] = info.pop("RSP_Peaks")
+        info['FLW_Troughs'] = info.pop("RSP_Troughs")
     elif method == "biosppy":
         info = _rsp_findpeaks_biosppy(cleaned, sampling_rate=sampling_rate)
+        info['FLW_Peaks'] = info.pop("RSP_Peaks")
+        info['FLW_Troughs'] = info.pop("RSP_Troughs")
     elif method == "scipy":
         info = _rsp_findpeaks_scipy(
             cleaned,
@@ -94,6 +98,8 @@ def flw_findpeaks(
             peak_distance=peak_distance,
             peak_prominence=peak_prominence,
         )
+        info['FLW_Peaks'] = info.pop("RSP_Peaks")
+        info['FLW_Troughs'] = info.pop("RSP_Troughs")
     else:
         raise ValueError(
             "NeuroKit error: flw_findpeaks(): 'method' should be one of 'fsa', 'khodadad2018', 'scipy' or 'biosppy'."

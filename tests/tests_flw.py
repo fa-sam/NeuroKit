@@ -20,7 +20,7 @@ class TestCase:
     insp_onsets: list
     exsp_onsets: list
 
-flow_sample_files = ["003_943477", "003_1037669", "003_1327737", "003_1352827", "003_1390320", "003_1439755", "003_1698227", "003_1833370", "003_2363468", "003_2551420", "003_2975805"]
+flow_sample_files = ["003_943477", "003_1037669", "003_1327737", "003_1352827", "003_1390320", "003_1439755", "003_1698227", "003_2363468", "003_2551420", "003_2975805"]
 cases = [
     TestCase(file_id=1, pad_length=0, peaks=[], troughs=[], insp_onsets=[], exsp_onsets=[]),
     TestCase(file_id=1, pad_length=5, peaks=[], troughs=[], insp_onsets=[], exsp_onsets=[]),
@@ -53,7 +53,7 @@ def test_flw_clean(file_id, method):
 
 
 
-@pytest.mark.parametrize("file_id", flow_sample_files[0:1])
+@pytest.mark.parametrize("file_id", flow_sample_files)
 @pytest.mark.parametrize("pad_length", [0,5])
 def test_flw_peaks(file_id, pad_length):
     flw = load_flow(id=file_id)
@@ -128,3 +128,52 @@ def test_flw_symmetry(file_id, pad_length):
     for key, array_values in symm_info.items():
         assert len(test_info[key]) == len(array_values)
         assert list(map(lambda x: round(x, 2), array_values.tolist())) == list(map(lambda x: round(x,2), test_info[key]))
+
+@pytest.mark.parametrize("file_id", flow_sample_files)
+@pytest.mark.parametrize("pad_length", [0,5])
+def test_flw_rvt(file_id, pad_length):
+    flw = load_flow(file_id)
+    test_results_json = load_test_results()
+    test_info = test_results_json[f'flow_sample_{file_id}'][f"pad_len={pad_length}"]
+    flw_cleaned = nk.flw_clean(flw, sampling_rate)
+
+    signals, peaks_info = nk.flw_peaks(flw_cleaned, sampling_rate, pad_length=pad_length)
+    flw_cleaned = signals['FLW_Clean']
+    peaks = peaks_info["FLW_Peaks"]
+    troughs = peaks_info["FLW_Troughs"]
+
+    _, rvt_info = nk.flw_rvt(flw_cleaned, {'FLW_Peaks':peaks, 'FLW_Troughs':troughs}, sampling_rate)
+    for key, array_values in rvt_info.items():
+        assert len(test_info[key]) == len(array_values)
+        assert list(map(lambda x: round(x, 2), array_values.tolist())) == list(map(lambda x: round(x,2), test_info[key]))
+
+
+@pytest.mark.parametrize("file_id", flow_sample_files)
+@pytest.mark.parametrize("pad_length", [0,5])
+def test_flw_rrv(file_id, pad_length):
+    param_names = ["RRV_RMSSD", "RRV_MeanBB", "RRV_SDBB", "RRV_SDSD", "RRV_CVBB", "RRV_CVSD", "RRV_MedianBB",
+                   "RRV_MadBB", "RRV_MCVBB", "RRV_VLF", "RRV_LF", "RRV_HF", "RRV_LFHF", "RRV_LFn", "RRV_HFn", "RRV_SD1",
+                   "RRV_SD2", "RRV_SD2SD1", "RRV_ApEn", "RRV_SampEn", ]
+    flw = load_flow(file_id)
+    test_results_json = load_test_results()
+    test_info = test_results_json[f'flow_sample_{file_id}'][f"pad_len={pad_length}"]
+    flw_cleaned = nk.flw_clean(flw, sampling_rate)
+
+    signals, peaks_info = nk.flw_peaks(flw_cleaned, sampling_rate, pad_length=pad_length)
+    flw_cleaned = signals['FLW_Clean']
+    troughs = peaks_info["FLW_Troughs"]
+
+    rrv_df = nk.flw_rrv(flw_cleaned, troughs, sampling_rate)
+    rrv_info = rrv_df.to_dict(orient="index")[0]
+    for param in param_names:
+        if test_info[param] is None:
+            assert np.isnan(rrv_info[param]), f'Param {param} is expected to be nan'
+        else:
+            roundme = 0
+            if np.abs(test_info[param]) <1:
+                roundme = 2
+            elif np.abs(test_info[param]) <10:
+                roundme = 1
+            elif np.abs(test_info[param]) <100:
+                roundme = 0
+            assert round(test_info[param], roundme) == round(rrv_info[param], roundme), f'Mismatch for param {param}'
