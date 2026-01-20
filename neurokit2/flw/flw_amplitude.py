@@ -77,7 +77,7 @@ def flw_amplitude(flw_cleaned, peaks, troughs=None, inspiration_onsets=None, met
             amplitude = signal_interpolate(peaks, amplitude_per_breath, x_new=np.arange(len(flw_cleaned)),
                                            method=interpolation_method)
 
-    info = {'FLW_Amplitude': amplitude_per_breath}
+    info = {'FLW_Amplitude': np.array(amplitude_per_breath)}
 
     return amplitude, info
 
