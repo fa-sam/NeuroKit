@@ -8,12 +8,15 @@ from .flw_rvt import flw_rvt
 from .flw_symmetry import flw_symmetry
 from .flw_time import flw_time
 from ..signal import signal_rate
+from .flw_rrv import flw_rrv
+from .flw_rate import flw_rate
 
 def flw_process(
     flw_signal,
     sampling_rate=100,
     method="khodadad2018",
     method_rvt="cycle",
+    method_amp="standard",
     pad_length=0,
     **kwargs
 ):
@@ -38,6 +41,9 @@ def flw_process(
     method_rvt : str
         The rvt method to apply. Can be one of ``"cycle"`` (default), ``"continuous"``,
         or ``"cycle"``.
+    method_amp : str
+        The method to apply for calculating amplitude. Can be one of ``"standard"`` (default),
+        ``"max-min"`` or ``"prepost"``.
     pad_length : float
         The length of padding in seconds from both sides of the signal. If the signal is padded from both sides, we use the whole
         signal for filtering (flw_clean) and peak detection, but only consider the part without padding for the
@@ -108,7 +114,7 @@ def flw_process(
 
     # Get additional parameters
     # _, amp_info = flw_amplitude(flw_cleaned, {'FLW_Peaks':peaks, 'FLW_Troughs':troughs})
-    _, amp_info = flw_amplitude(flw_cleaned, peaks={'FLW_Peaks':peaks, 'FLW_Troughs':troughs}, inspiration_onsets=insp_onsets, method='max-min')
+    _, amp_info = flw_amplitude(flw_cleaned, peaks={'FLW_Peaks':peaks, 'FLW_Troughs':troughs}, inspiration_onsets=insp_onsets, method=method_amp)
 
     symmetry_info = flw_symmetry(flw_cleaned, {'FLW_Peaks':peaks, 'FLW_Troughs':troughs})
 

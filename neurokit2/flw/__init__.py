@@ -13,6 +13,7 @@ from .flw_time import flw_time
 from .flw_rav import flw_rav
 from .flw_onsets import find_onsets
 from .flw_simulate import flw_simulate
+from .flw_flat import flw_flat
 
 __all__ = [
     "flw_clean",
@@ -26,5 +27,6 @@ __all__ = [
     "flw_time",
     "flw_rav",
     "find_onsets",
-    'flw_simulate'
+    "flw_simulate",
+    "flw_flat"
 ]

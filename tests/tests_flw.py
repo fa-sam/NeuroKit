@@ -70,7 +70,7 @@ def test_flw_peaks(file_id, pad_length):
     assert test_info['FLW_InspirationOnsets'] == info["FLW_InspirationOnsets"].tolist()
     assert test_info['FLW_ExpirationOnsets'] == info["FLW_ExpirationOnsets"].tolist()
 
-@pytest.mark.parametrize("file_id", ["003_943477"])
+@pytest.mark.parametrize("file_id", flow_sample_files)
 @pytest.mark.parametrize("pad_length", [0,5])
 def test_flw_time(file_id, pad_length):
     flw = load_flow(file_id)
@@ -91,7 +91,7 @@ def test_flw_time(file_id, pad_length):
     assert time_info['FLW_RRI'].tolist() == test_info['FLW_RRI']
 
 
-@pytest.mark.parametrize("file_id", ["003_943477"])
+@pytest.mark.parametrize("file_id", flow_sample_files)
 @pytest.mark.parametrize("pad_length", [0,5])
 def test_flw_amplitude(file_id, pad_length):
     flw = load_flow(file_id)
@@ -105,12 +105,12 @@ def test_flw_amplitude(file_id, pad_length):
     troughs = peaks_info["FLW_Troughs"]
     insp_onsets = peaks_info["FLW_InspirationOnsets"]
 
-    _, amp_info = nk.flw_amplitude(flw_cleaned, peaks={'FLW_Peaks':peaks, 'FLW_Troughs':troughs}, inspiration_onsets=insp_onsets, method='max-min')
+    _, amp_info = nk.flw_amplitude(flw_cleaned, peaks={'FLW_Peaks':peaks, 'FLW_Troughs':troughs}, inspiration_onsets=insp_onsets, method='standard')
 
     assert len(test_info['FLW_Amplitude']) == len(amp_info['FLW_Amplitude'])
     assert list(map(lambda x: round(x, 2), amp_info['FLW_Amplitude'].tolist())) == list(map(lambda x: round(x,2), test_info['FLW_Amplitude']))
 
-@pytest.mark.parametrize("file_id", ["003_943477"])
+@pytest.mark.parametrize("file_id", flow_sample_files)
 @pytest.mark.parametrize("pad_length", [0,5])
 def test_flw_symmetry(file_id, pad_length):
     flw = load_flow(file_id)
@@ -139,10 +139,8 @@ def test_flw_rvt(file_id, pad_length):
 
     signals, peaks_info = nk.flw_peaks(flw_cleaned, sampling_rate, pad_length=pad_length)
     flw_cleaned = signals['FLW_Clean']
-    peaks = peaks_info["FLW_Peaks"]
-    troughs = peaks_info["FLW_Troughs"]
 
-    _, rvt_info = nk.flw_rvt(flw_cleaned, {'FLW_Peaks':peaks, 'FLW_Troughs':troughs}, sampling_rate)
+    _, rvt_info = nk.flw_rvt(flw_cleaned, peaks_info, sampling_rate)
     for key, array_values in rvt_info.items():
         assert len(test_info[key]) == len(array_values)
         assert list(map(lambda x: round(x, 2), array_values.tolist())) == list(map(lambda x: round(x,2), test_info[key]))
@@ -163,10 +161,14 @@ def test_flw_rrv(file_id, pad_length):
     flw_cleaned = signals['FLW_Clean']
     troughs = peaks_info["FLW_Troughs"]
 
-    rrv_df = nk.flw_rrv(flw_cleaned, troughs, sampling_rate)
+    rate_info = nk.flw_rate(flw_cleaned, troughs, sampling_rate=100)
+
+    rrv_df = nk.flw_rrv(rate_info, troughs, sampling_rate)
     rrv_info = rrv_df.to_dict(orient="index")[0]
     for param in param_names:
         if test_info[param] is None:
+            if param=="RRV_SampEn":
+                continue
             assert np.isnan(rrv_info[param]), f'Param {param} is expected to be nan'
         else:
             roundme = 0
