@@ -41,13 +41,11 @@ def flw_rvt(
 
     Returns
     -------
-    array
-
-        rvt : array, RVT in L/s, length == len(flow). Array containing the current RVT at every breath.
-        info : dict with keys
-            'FLW_Tidal_Volume'|nparray, tidal volume for each breath
-            'cycle_s'|nparray, inspiration time for each breath
-            'FLW_MVF'|nparray, mean ventilatory flow for each breath.
+    rvt : array, RVT in L/s, length == len(flow). Array containing the current RVT at every breath.
+    info : dict with keys
+        'FLW_Tidal_Volume'|nparray, tidal volume for each breath
+        'cycle_s'|nparray, inspiration time for each breath
+        'FLW_MVF'|nparray, mean ventilatory flow for each breath.
 
     See Also
     --------

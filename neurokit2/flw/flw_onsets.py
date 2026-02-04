@@ -32,11 +32,10 @@ def find_onsets(
 
     Returns
     -------
-    dict
-    {
-      "FLW_InspirationOnsets":np.ndarray,
-      "FLW_ExpirationOnsets": np.ndarray
-    }
+    onset_info: dict
+        A dictionary containing onsets information, in this case the samples at which inspiration onsets,
+        and expiration onsets occur, accessible with the keys ``"FLW_InspirationOnsets"``,
+        and ``"FLW_ExpirationOnsets"`` respectively.
 
     """
 
@@ -92,7 +91,7 @@ def find_onsets(
     clusters.append(np.array(current, dtype=int))
 
     # --- 3) For each cluster, take the midpoint between first and last crossing
-    probe_offset = int(round(probe_offset_sec * sampling_rate))
+    probe_offset = max(1, int(round(probe_offset_sec * sampling_rate)))
     min_breath = int(round(min_breath_sec * sampling_rate))
 
     insp_onsets = []
@@ -146,10 +145,11 @@ def find_onsets(
     insp_onsets = np.array(insp_onsets, dtype=int)
     exp_onsets = np.array(exp_onsets, dtype=int)
 
-    return {
+    onset_info = {
         "FLW_InspirationOnsets": insp_onsets,
         "FLW_ExpirationOnsets": exp_onsets
     }
+    return onset_info
 
 def _flw_fix_onsets(peaks, troughs, insp_onsets, exsp_onsets):
     events = np.concatenate([peaks, troughs])

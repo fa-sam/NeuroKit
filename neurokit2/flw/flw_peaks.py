@@ -59,7 +59,7 @@ def flw_peaks(flw_cleaned, sampling_rate=100, pad_length=0, method="fsa", **kwar
           import neurokit2 as nk
           import pandas as pd
 
-          flw = nk.rsp_simulate(duration=30, respiratory_rate=15, sampling_rate=100)
+          flw = 40*nk.rsp_simulate(duration=30, respiratory_rate=15, sampling_rate=100)
           cleaned = nk.flw_clean(flw, sampling_rate=100)
           peak_signal, info = nk.flw_peaks(cleaned, sampling_rate=100)
           peak_signal.drop(columns=['FLW_Clean'], inplace=True)
